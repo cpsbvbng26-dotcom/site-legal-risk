@@ -76,7 +76,7 @@
       "how": "repositories in the scope line of DISCLAIMER.en.md"
     },
     "evItems": {
-      "value": 114,
+      "value": 115,
       "how": "items in verification/evidence.json"
     },
     "evPRs": {
@@ -84,7 +84,7 @@
       "how": "pull requests cited in verification/evidence.json"
     },
     "evQuotes": {
-      "value": 95,
+      "value": 96,
       "how": "items in verification/evidence.json that carry a quotation"
     },
     "evRepos": {
