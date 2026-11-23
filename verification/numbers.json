@@ -4,7 +4,7 @@
   ],
   "numbers": {
     "auditBasis": {
-      "value": 53,
+      "value": 52,
       "how": "rows whose finding is Insufficient basis"
     },
     "auditCats": {
@@ -12,7 +12,7 @@
       "how": "categories of findings"
     },
     "auditError": {
-      "value": 67,
+      "value": 66,
       "how": "rows whose finding is Error"
     },
     "auditErrorPct": {
@@ -20,7 +20,7 @@
       "how": "Error rows as a percentage of all rows, rounded"
     },
     "auditNotOk": {
-      "value": 414,
+      "value": 410,
       "how": "rows with a finding other than No problem"
     },
     "auditNotOkPct": {
@@ -28,11 +28,11 @@
       "how": "that number as a percentage of all rows, rounded"
     },
     "auditOk": {
-      "value": 276,
+      "value": 275,
       "how": "rows whose finding is No problem"
     },
     "auditOmission": {
-      "value": 187,
+      "value": 186,
       "how": "rows whose finding is Omission"
     },
     "auditOther": {
@@ -44,11 +44,11 @@
       "how": "audit records counted"
     },
     "auditTotal": {
-      "value": 690,
+      "value": 685,
       "how": "rows of findings in those records"
     },
     "auditWording": {
-      "value": 107,
+      "value": 106,
       "how": "rows whose finding is Wording"
     },
     "canonArticles": {
