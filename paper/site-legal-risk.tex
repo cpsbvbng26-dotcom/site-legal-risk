@@ -1,0 +1,372 @@
+\documentclass[11pt]{article}
+\usepackage{fontspec}
+\newfontfamily\jafont{IPAGothic}[Ligatures=NoCommon]
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Legal Risk Management by Domain for Website Operation in the Age of AI: A Case Study of a Single Operator's Sites},pdfauthor={Takuya Nemoto},pdfsubject={CC BY 4.0},pdfkeywords={legal risk management, website operation, compliance as code, personal information, generative AI, Japan}}
+\pdfvariable suppressoptionalinfo 1023
+\pdfvariable trailerid {[<00000000000000000000000000000000><00000000000000000000000000000000>]}
+\sloppy
+\directlua{dofile("ja.lua")}
+\input{generated/numbers.tex}
+\newcommand{\ja}[1]{\directlua{ja("\luaescapestring{\detokenize{#1}}")}}
+\newcommand{\srcq}[1]{\directlua{srcq("\luaescapestring{#1}")}}
+\newcommand{\ev}[1]{\directlua{ev("\luaescapestring{#1}")}}
+\newcommand{\statq}[2]{\directlua{ja("「\luaescapestring{\detokenize{#2}}」")}}
+\newcommand{\citeev}[1]{(\ev{#1})}
+\newcommand{\summ}[1]{(Summary, not a translation: #1)}
+
+\title{Legal Risk Management by Domain for Website Operation in the Age of AI:\\ A Case Study of a Single Operator's Sites}
+\author{Takuya Nemoto\\ \small\url{https://orcid.org/0009-0000-1406-0547}}
+\date{23 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+A person who runs several small websites and code repositories alone, with a language model writing much of the text and code, meets the same legal questions as a larger organisation, but without a legal department and without a lawyer. This paper studies one such operator: the author. The case set is the operator's research-side sites and repositories, read at commits pinned for this paper. For each legal domain (copyright, designs and trademarks; personal information, including the provision of issue text to a language-model vendor abroad; content submitted by others and its removal; statements about people; terms of use and contract terms; accessibility; territorial scope; and risks that come from the use of AI itself), the paper sets out the risk, what the sites do, how it is checked by machine, and what remains. The evidence is the operator's own policies, the records of legal audits, and the checks that run on every change, each cited by repository, file, commit or pull request. The \nAuditRepos{} audit records counted here contain \nAuditTotal{} findings, of which \nAuditNotOk{} (\nAuditNotOkPct{}\%) are something other than ``no problem''. Across domains, a common method appears, which the paper calls compliance as code: statutes are quoted only from texts fetched from the e-Gov law API and recorded with their SHA-256; every quotation, number and citation is compared by a script with its source; each check is broken on purpose to show that it fails; and, on one site, a change that narrows a right fails a check unless it is announced in advance. The paper also shows what this method cannot do. No lawyer has reviewed the sites or this paper; the author runs the sites studied; it is a single case; it is centred on Japanese law; and much of what matters in law is not a property of text that a script can compare. This paper is not legal advice.
+\end{abstract}
+
+\bigskip
+\noindent\ja{【要旨】}\quad
+\ja{運営者が単独で複数のサイトとリポジトリを運営し、文とコードの多くを言語モデルで書く場合でも、法務の問いは大きな組織と同じように生じます。この稿は、著者自身の研究の側のサイトとリポジトリを事例として、分野ごとに、危険、サイトの扱い、機械による確かめ、残る危険を整理します。分野は、著作権・意匠・商標、個人情報（言語モデルの事業者への国外の提供を含む）、投稿と削除、人についての記載、利用規約と契約の条項、見やすさ、提供する地域、言語モデルの使用に固有の危険です。証拠は、運営者の規程、法令の点検の記録、変更のたびに走る検査で、リポジトリ・ファイル・コミット・プルリクエストで示します。分野を横断して、条文を e-Gov 法令 API から取り寄せた文だけから引き、ハッシュで記録し、引用・数・出典を台本で照らし、検査を壊して落ちることを確かめる方法が見えます。弁護士は見ていません。著者は対象のサイトの運営者です。この稿は法的な助言ではありません。}
+
+\medskip
+\noindent\textbf{Keywords:} legal risk management; website operation; compliance as code; personal information; cross-border data transfer; generative AI; Japanese law; case study.
+
+\noindent\textbf{Suggested SSRN classification:} law, as a compliance case study in information and cyber law, data protection, intellectual property, and law and technology (AI); secondary, information systems, for the part on compliance as code. At the level of SSRN's networks, this corresponds to the Legal Scholarship Network and, secondarily, Information Systems. These network names were not checked against SSRN's current list, which could not be read from the environment in which this paper was prepared, and no eJournal is named for that reason.
+
+\section*{Statements}
+\noindent\textbf{Not legal advice.} This paper describes how one operator manages legal risk on their own sites. It is not legal advice, and nothing in it says that any practice described is lawful or sufficient.
+
+\noindent\textbf{No lawyer has reviewed it.} No lawyer has reviewed this paper, the sites it studies, or the legal audits it counts. The audits themselves say so (Section~\ref{sec:audits}), and so does the operator's page on the design: \srcq{dl-no-lawyer}
+
+\noindent\textbf{Conflict of interest.} The author operates every site and repository studied here and wrote, with a language model, the policies and checks described. The author therefore has an interest in presenting them favourably. Section~\ref{sec:limits} sets out what was done to limit this, and what was not.
+
+\noindent\textbf{Use of a language model.} Claude Code (Anthropic) was used for this paper: to read the repositories, to fetch and record the statutes, to write the scripts that compute every number and check every quotation and citation, and to draft the text. The author takes full responsibility for the content. Claude is not an author.
+
+\section{Introduction}\label{sec:intro}
+
+Legal risk is easy to think of as a matter for large platforms. Yet a single operator who publishes texts, accepts reports in public issues, lists the work of others, or draws a logo touches copyright, personal information, defamation, contract and accessibility law in the same way as a company does. What the single operator lacks is not exposure but capacity: there is no legal department, no budget for counsel, and no second person to notice a mistake.
+
+A new element is the use of a language model to write much of the text and code. It adds capacity, but it adds risks of its own. A model may cite a statute that does not exist or quote one inaccurately. It may write a policy that promises more than the operator does. Its vendor may receive what it reads, which can include other people's personal information. And a reader may not know which words a person wrote.
+
+This paper studies how one operator, the author, manages these risks across a set of small sites and repositories. The question is descriptive: for each legal domain, what is the risk, what do the sites do about it, how is that checked by machine, and what remains unmanaged? A second question is methodological: is there a common method across domains, and what are its limits?
+
+The paper's contributions are each limited by the fact that it is a single case studied by its own operator. First, it gives a domain-by-domain account, tied to evidence that a reader can open: every policy sentence quoted is compared by a script with the file at a pinned commit, and every pull request cited is checked to have been merged. Second, it counts the findings of the operator's legal audit records, which shows how often a careful but non-professional review finds something wrong. Third, it describes a method, here called compliance as code, and sets out plainly what that method cannot do.
+
+The paper does not review the literature on legal risk management, compliance automation or the regulation of AI. That is a limitation (Section~\ref{sec:limits}), not a claim that no such literature exists. Nothing here is claimed to be new beyond the case itself.
+
+Section~\ref{sec:method} describes the case set and the method. Section~\ref{sec:audits} counts the audit findings. Section~\ref{sec:domains} goes through the legal domains. Section~\ref{sec:cac} describes compliance as code across them. Section~\ref{sec:discussion} discusses what the case suggests, and Section~\ref{sec:limits} sets out the limitations.
+
+\section{Case set and method}\label{sec:method}
+
+\subsection{The case set}
+
+The operator runs a group of sites and repositories on research and on the operator's own profile, and, separately, creative sites. The creative sites are excluded from the case set. The research-side repositories keep a rule that the research series does not name or link the creative sites, and a cross-repository check enforces it (Section~\ref{sec:ai}); this paper follows the same rule, and its own check fails if it does not (Section~\ref{sec:repro}).
+
+The case set consists of the repositories below, each read at the commit pinned in \texttt{verification/evidence.json} of this paper's repository. There are \nEvRepos{} of them.
+
+\begin{itemize}
+\item \textbf{cpsbvbng26-dotcom}, the operator's profile site, served from GitHub Pages and Vercel. It holds the disclaimer that applies to the research repositories, the canonical copies of files that other repositories copy word for word, the record of the legal audit of the research repositories, and the cross-repository check.
+\item \textbf{researcher-profile}, from which the pages of the profile site are generated.
+\item \textbf{Sophaxis}, an overlay listing of preprints in philosophy and mathematics run by the operator, which accepts submissions from others through GitHub issues.
+\item \textbf{legal-and-governance}, the legal entrance of the research side, which gathers the frameworks, disclaimers, audit records and statute indexes of the other repositories and receives requests about them.
+\item \textbf{research-collaboration}, which invites research collaboration and receives proposals in public issues.
+\item \textbf{deposit-check} and \textbf{errata-check}, small tools of the research series, each with its own legal audit record.
+\end{itemize}
+
+The disclaimer of the profile site applies to \nDiscTen{} repositories, and certain of its sections to \nDiscExtra{} more \citeev{disc-contract}. Of those, only the repositories above are read for this paper; the others are mentioned only where a shared rule or file reaches them.
+
+\subsection{Evidence}
+
+The evidence is of the following kinds: policies and disclaimers as published; records of legal audits; the checks that run on every change; and the history of commits and pull requests. Each item cited is listed in Appendix~\ref{app:evidence}, with its repository, file, commit or pull request. The registry has \nEvItems{} items, of which \nEvQuotes{} carry a quotation and \nEvPRs{} are pull requests.
+
+The paper prints quotations from these sources only through a macro that takes the words from the registry, and a script checks, for each, that the words occur in the file at the pinned commit (Section~\ref{sec:repro}). Numbers in the text are printed only through macros generated by a script from the pinned sources. A check fails if a digit appears in the prose outside those macros, a date ledger and a short list of fixed forms such as the licence name.
+
+\subsection{Statutes}
+
+Japanese statutes are quoted only from texts fetched from the e-Gov law API, in the original Japanese. The law numbers were copied from the profile site's recorded statutes, not written from memory. The \nStatArticles{} articles quoted, from \nStatLaws{} laws, were fetched on 2026-11-23 and recorded with the SHA-256 of their text (Appendix~\ref{app:statutes}). Each was also compared with the copy that the profile site had recorded earlier, and every text was the same. A check fails if a quotation is not a substring of the recorded text, or if the paper refers to an article that is not recorded.
+
+The English beside each quotation is labelled ``Summary, not a translation''. No official translation was used or guessed. This follows the practice of the operator's own pages \citeev{dl-summary}.
+
+Foreign law is not quoted. The operator's repositories hold a few excerpts of foreign texts, but not full recorded copies of the kind used here for Japanese law. Where a policy studied here relies on foreign law, this paper says what the policy says and marks the foreign law as not checked for this paper.
+
+\subsection{Why these domains}
+
+The domains were chosen from the laws that the operator's own audit records cite, grouped by the interest they protect rather than by statute. Copyright, designs and trademarks protect creators and holders of signs; personal information protects the people the sites receive information about; the rules on content of others and on statements about people protect people affected by what the sites show; terms and contract rules protect readers and submitters as counterparties; accessibility protects readers with disabilities; territorial scope concerns which state's law reaches the sites at all. A last group collects risks that the use of a language model creates across these domains. Other laws appear in the records, for example on telecommunications business, tax registration and advertising; they are left out here because the records found that the sites do not engage them, or because they concern the operator rather than the sites.
+
+\subsection{The template for each domain}
+
+Each domain in Section~\ref{sec:domains} has the same parts. \emph{Risk} names the legal exposure, with the article quoted where one is relied on. \emph{What the sites do} describes the policy or practice. \emph{Machine check} says what a script verifies. \emph{Residual risk and limits} says what is not managed, not checked, or not decided.
+
+\section{The audits in numbers}\label{sec:audits}
+
+The operator's repositories keep records of legal audits. The audit of the profile site, dated 2026-11-12 and continued afterwards, describes its method: each place where a law appears was listed, and each cited article was compared with a fetched text \citeev{audit-memory}. Each row of its tables gives a finding in one of \nAuditCats{} categories: error, insufficient basis, omission, wording, and no problem. Sophaxis, researcher-profile, errata-check and deposit-check keep records with the same categories (deposit-check in English): \ev{sx-audit}, \ev{rp-audit}, \ev{ec-audit} and \ev{dc-audit}. The profile site's record opens with \srcq{audit-by-claude} \summ{this page records the legal audit that Claude carried out on 2026-11-12}, defines an error as \srcq{audit-error-def} \summ{an article or quotation that is wrong, or a conclusion that does not follow from the text of the article cited}, and ends with \srcq{audit-no-lawyer} \summ{no lawyer has looked at this audit}. It also says \srcq{audit-not-advice} \summ{the page records the operator's position and is not legal advice to readers}.
+
+Table~\ref{tab:audits} counts the findings, row by row, in the \nAuditRepos{} records read at their pinned commits. A row counted under a category is a table row whose finding cell is exactly that category; no row had any other value.
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{lrrrrrrr}
+\toprule
+Record & No problem & Wording & Omission & Insuff.\ basis & Error & Other & Rows \\
+\midrule
+\csname @@input\endcsname generated/audit.tex 
+\bottomrule
+\end{tabular}
+\caption{Findings in the legal audit records, counted by \texttt{scripts/generate.js}. Each record was read at its pinned commit.}\label{tab:audits}
+\end{table}
+
+Of the \nAuditTotal{} rows, \nAuditOk{} found no problem, and \nAuditNotOk{} (\nAuditNotOkPct{}\%) found something else. \nAuditError{} rows (\nAuditErrorPct{}\%) were errors: a wrong article, a wrong quotation, or a conclusion that the cited text does not support. \nAuditOmission{} were omissions: a law or duty that had not been considered.
+
+These counts must be read with care. A row is not a risk of equal weight; a wrong date and a missing consent count the same. The profile site's record, for example, was continued many times on the day it was begun, as later passes found what earlier passes had missed, so the counts mix first findings with corrections of the audit itself. That record was written by the same model that wrote much of what it audits. And the category ``no problem'' means only that the audit found none. Still, the counts support a plain observation: in this case, more than half of the rows that a careful review without a lawyer wrote record something to correct, add or state more carefully.
+
+\section{The domains}\label{sec:domains}
+
+\subsection{Copyright, designs and trademarks}\label{sec:ip}
+
+\paragraph{Risk.} A site may copy another person's work, and the operator's own visual material (logo, ornaments, figures, layout) may or may not be a work, a registered design or a trademark of someone else. The Copyright Act defines a work as \statq{著作権法 第2条}{思想又は感情を創作的に表現したものであつて、文芸、学術、美術又は音楽の範囲に属するもの} \summ{a creative expression of thoughts or sentiments within the literary, academic, artistic or musical domain}, names among its examples \statq{著作権法 第10条}{絵画、版画、彫刻その他の美術の著作物} \summ{paintings, engravings, sculptures and other works of fine art}, and gives the author the right of reproduction: \statq{著作権法 第21条}{著作者は、その著作物を複製する権利を専有する。} \summ{the author has the exclusive right to reproduce the work}. A design may be, among other things, \statq{意匠法 第2条}{画像} \summ{an image}, within the limits the Design Act sets, and the holder of a registered design has the exclusive right \statq{意匠法 第23条}{業として登録意匠及びこれに類似する意匠の実施をする権利を専有する} \summ{to work the registered design and similar designs as a business}. A registered trademark gives its holder the exclusive right \statq{商標法 第25条}{指定商品又は指定役務について登録商標の使用をする権利を専有する} \summ{to use it for the designated goods or services}. The Unfair Competition Prevention Act also reaches the use of \statq{不正競争防止法 第2条}{他人の商品等表示} \summ{another person's indication of goods or business} in certain conditions.
+
+\paragraph{What the sites do.} The profile site has a page on the legal handling of its design, added by \ev{pr-cps-341} and generated from \ev{rp-design-legal}. It lists each visual part, how it was made, its licence and how it is checked. The logo is drawn from rectangles and a polygon, and the page states \srcq{dl-logo}. No font file is served: \srcq{dl-fonts}. On whether the visual parts are works at all, the page does not decide: \srcq{dl-fineart}. Instead it states the licence that applies to whatever parts are works (CC BY 4.0 for the logo and images, MIT for the markup, styles and scripts), so that a reader can tell what may be reused. External material is not loaded: \srcq{dl-csp}.
+
+The repositories separate licences in the same way. Texts and papers are CC BY 4.0 and code is MIT, and the disclaimer says that texts by others quoted in the repositories remain their owners'.
+
+\paragraph{Machine check.} The design page names the sections of the site's check that verify each claim, such as the number of shapes and colours of the logo, the number and size of the share images, and the absence of any \texttt{@font-face} rule. The profile site's check also compares the licence statements across files. The audit record notes that one such statement had been wrong: a repository had been described as entirely MIT-licensed while parts of it are CC BY 4.0 \citeev{audit-mit}, and a check was added after the correction. The design page itself points to the check for each part, for example \srcq{dl-check}.
+
+\paragraph{Residual risk and limits.} Registration was not searched: \srcq{dl-registers}. Whether any visual part is a work, and whether the operator acts ``as a business'' within the meaning of the Design Act, are left undecided. The audit records that the old Copyright Act was not fetched, so the term of protection of old works was not judged \citeev{audit-old-act}. The checks verify what the pages say about the files; they cannot verify that nobody else's work was copied into a file.
+
+\subsection{Personal information and cross-border provision}\label{sec:pi}
+
+\paragraph{Risk.} Personal information under the Act on the Protection of Personal Information is \statq{個人情報保護法 第2条}{生存する個人に関する情報} \summ{information about a living individual} that identifies a person. The duties of the Act's chapter on businesses apply to a business operator handling personal information, defined through the use of a personal information database for a business \statq{個人情報保護法 第16条}{個人情報データベース等を事業の用に供している者} \summ{a person who uses a personal information database for a business}. Such an operator must, on acquiring personal information, \statq{個人情報保護法 第21条}{速やかに、その利用目的を、本人に通知し、又は公表しなければならない} \summ{promptly notify or publish the purpose of use}, unless it was published in advance. Providing personal data to a third party in a foreign country requires, in principle, \statq{個人情報保護法 第28条}{あらかじめ外国にある第三者への提供を認める旨の本人の同意を得なければならない} \summ{the prior consent of the person to the provision to a third party abroad}, and the person must first be given information on \statq{個人情報保護法 第28条}{当該外国における個人情報の保護に関する制度、当該第三者が講ずる個人情報の保護のための措置その他当該本人に参考となるべき情報} \summ{that country's system of protection, the measures the third party takes, and other information useful to the person}.
+
+\paragraph{What the sites do.} The sites collect almost nothing: \srcq{disc-cookie}. Reports of errors and requests arrive in public GitHub issues or by email, and requests that contain personal information are taken by email \citeev{disc-people-email}. Whether the operator is a business operator handling personal information is not decided; the audit kept the question as a record only \citeev{audit-pi-undecided}. The disclaimer commits to the duties regardless: \srcq{disc-business}.
+
+The most instructive case is the provision of issue text to the language-model vendor. The first audit had judged that no mechanism existed for passing personal data to a third party. A later pass found that this was wrong, because the operator's work is done with Claude Code, which reads issues and passes their text to Anthropic in the United States. The record keeps the original row and states what it said: \srcq{audit-17-before} \summ{the row on provision to third parties had found no problem, on the ground that there was no mechanism for passing personal data to a third party}. The correction is dated \srcq{audit-17-date} \summ{the date of the correction is 2026-11-13, Japan time}.
+
+The correction, merged by \ev{pr-cps-297}, did the following. First, the disclaimer now says: \srcq{disc-art28} Second, the error report form gained a required consent box (\ev{c-cps-consent}), whose English text and requirement read \srcq{form-consent}. The form is a canonical file, copied word for word into other repositories; this paper's repository carries the same copy. Third, the operator's working rules now say that only issues with the consent line ticked are read, and the disclaimer states \srcq{disc-only-ticked} and \srcq{disc-other-forms}. research-collaboration applies the same rule to its own forms \citeev{rc-consent}; its privacy statement was revised after a read-only legal review in \ev{pr-rc-4}.
+
+\paragraph{Machine check.} The cross-repository check fixes the consent sentence of every copy of the form and the disclaimer's sentences in both languages, and fails if a copy differs from the canonical file by one byte. This paper's repository records the SHA-256 of the \nCopies{} canonical files it copies, and its checks compare the copies with the record and the record with the canonical files on the profile site's main branch.
+
+\paragraph{Residual risk and limits.} What happened before the correction was not checked: \srcq{audit-17-past} \summ{whether the title and text of issues opened by others reached Claude in earlier work has not been checked}. How the vendor keeps and uses what it receives depends on account settings that were not read: \srcq{disc-settings}. The information given under the second paragraph of the article relies on the published materials of Japan's Personal Information Protection Commission and on the vendor's privacy policy, as the disclaimer cites them; whether that information is sufficient is a legal judgement that no check makes. The audit also records, and does not rely on, the exemption of the Act for \statq{個人情報保護法 第57条}{著述を業として行う者} \summ{persons whose business is writing} \citeev{audit-art57}. And the operator reads issues through a GitHub tool; that this tool is used only with a quoted search for the consent sentence is a working rule, not something a check on the repository can see.
+
+\subsection{Content submitted by others, and its removal}\label{sec:ugc}
+
+\paragraph{Risk.} A site that shows content written by others may be asked to remove it, and may be liable for it. The Act on rights infringement through specified telecommunications (its formal Japanese name is in the profile site's statute record \citeev{canon-ipa-name}) limits a provider's liability for the information of others, but its proviso excludes the case where \statq{情報流通プラットフォーム対処法 第3条}{当該関係役務提供者が当該権利を侵害した情報の発信者である場合} \summ{the provider is itself the sender of the infringing information}. The same article protects a provider who takes material down after asking the sender, where the sender has not objected by the end of a period counted \statq{情報流通プラットフォーム対処法 第3条}{当該照会を受けた日から七日を経過しても} \summ{from the day the sender received the inquiry}.
+
+\paragraph{What the sites do.} The profile site does not show content of others. Its audit records the reading that, for its own documents, the operator is the sender, so that the limitation does not apply: \srcq{audit-sender} \summ{the operator is the sender of its own documents, and by the proviso of the article the limitation of liability does not apply}.
+
+Sophaxis lists the work of others and has a takedown policy: \srcq{sx-offline} The policy says what happens when automation does not run: \srcq{sx-hand}. In other cases, the authors are asked first, and \srcq{sx-seven}. The policy describes the procedure in these words: \srcq{sx-approach}. The terms place responsibility for the content on its authors: \srcq{sx-authors}.
+
+research-collaboration narrows what it accepts in advance: \srcq{rc-human}.
+
+\paragraph{Machine check.} Sophaxis's working rules say that the promises of its policies, the removal procedure among them, are fixed in their words by its check: \srcq{sx-fixed} \summ{the check fixes them by their sentences}. The checked intake (Section~\ref{sec:ai}) applies the same rule to every error report: it labels and comments, but does not close or lock.
+
+\paragraph{Residual risk and limits.} The period of \nObjectionDays{} days in Sophaxis's policy has the same length as the period in the article quoted above, but the paper does not conclude that Sophaxis is a provider to which the article applies, or that its procedure meets the article's conditions. The automatic step that takes a record offline depends on GitHub Actions, which the operator does not control. The policy's sections on foreign law, including the Digital Services Act of the European Union and United States copyright notices, were not checked for this paper.
+
+\subsection{Statements about people}\label{sec:people}
+
+\paragraph{Risk.} A statement of fact that lowers a person's reputation may be defamation. The Penal Code punishes a person who \statq{刑法 第230条}{公然と事実を摘示し、人の名誉を毀損した者} \summ{publicly alleges facts and thereby damages a person's reputation}, with an exception where the facts concern \statq{刑法 第230条の2}{公共の利害に関する事実} \summ{matters of public interest}, the purpose is solely the public benefit, and the facts are proved true; for the dead, \statq{刑法 第230条}{死者の名誉を毀損した者は、虚偽の事実を摘示することによってした場合でなければ、罰しない。} \summ{damaging the reputation of the dead is punished only where false facts are alleged}, a point the audit relies on for the pages about ancestors \citeev{audit-dead}. Civil liability follows the general rule that \statq{民法 第709条}{故意又は過失によって他人の権利又は法律上保護される利益を侵害した者は、これによって生じた損害を賠償する責任を負う。} \summ{a person who intentionally or negligently infringes another's rights or protected interests must compensate the resulting loss}. Writing about living relatives also discloses information about people who did not choose to be written about.
+
+\paragraph{What the sites do.} The operator's rule is strict. The working rules say \srcq{claude-people} \summ{living persons are written about only up to the word ``parents''}, and the disclaimer says \srcq{disc-people}. The ancestors' page names only the deceased \citeev{claude-ancestors}. Corrections and removals are received by email or in an issue.
+
+\paragraph{Machine check.} The profile site's check has a pattern for words that refer to one living relative, and another for sentences that attribute views to the parents; the second was added by \ev{c-cps-kinship}, merged in \ev{pr-cps-282}. The check names are \srcq{site-kin} \summ{no living person appears beyond the single word for the relationship} and \srcq{site-kin-attr} \summ{no sentence attributes views, consent, plans or feelings to the parents}.
+
+\paragraph{Residual risk and limits.} The comment beside that check records why it was needed: the rule had been broken, and the breach was in a translation: \srcq{site-kin-translation} \summ{only the English version had described a living third party's business plan}. The Japanese said less than the English. This is a risk specific to text generated in several languages at once, which Section~\ref{sec:ai} returns to. A pattern of words cannot recognise every statement about a person; the check covers the pages listed in it, not every file.
+
+\subsection{Terms of use and contract terms}\label{sec:terms}
+
+\paragraph{Risk.} A disclaimer that excludes liability may be void, and terms that change without notice may not bind. Standard terms bind where the parties agree to a standard transaction and either agree that the terms form part of the contract or were told so in advance; the Civil Code provides that a party \statq{民法 第548条の2}{個別の条項についても合意をしたものとみなす} \summ{is deemed to have agreed also to the individual clauses (of the standard terms)} in the cases it lists. A change of standard terms without individual consent is allowed only in the cases of the Code, and the change does not take effect unless \statq{民法 第548条の4}{効力発生時期が到来するまでに同項の規定による周知をしなければ} \summ{it was made known before its effective date} (read in the negative). The Consumer Contract Act makes void, among others, a clause \statq{消費者契約法 第8条}{事業者の債務不履行により消費者に生じた損害を賠償する責任の全部を免除し} \summ{that exempts a business from all liability for loss caused to a consumer by its non-performance}.
+
+\paragraph{What the sites do.} The profile site's disclaimer avoids being a contract: \srcq{disc-contract} \srcq{disc-agree} It does not try to exclude liability: \srcq{disc-liab} \srcq{disc-art8}
+
+Sophaxis, which has submitters who agree in a form, does have terms. Its terms also list acts by others that may come near a law, with a caveat: \srcq{sx-table-caution} They cite the Civil Code on changes: \srcq{sx-548}. They require notice: \srcq{sx-notice}. And \srcq{sx-silence}.
+
+\paragraph{Machine check.} The notice period is enforced by a check. For the changes it covers, Sophaxis's check computes the days between the date of the announcement and the date the change takes effect, and fails with \srcq{sx-check-notice} when they are fewer than \nNoticeDays{}. The test was added in \ev{c-sx-notice}, merged in \ev{pr-sx-218}.
+
+\paragraph{Residual risk and limits.} Whether Sophaxis's terms are standard terms within the meaning of the Code, and whether a given change is one that the Code allows, are judgements that the check does not make; it checks dates. The profile site's position that its disclaimer is not a contract is the operator's reading, recorded in the audit as no problem; it was not tested against any dispute. Sophaxis's terms also name a court and, from a later date and only for those who agree in a form, limit liability for negligence that is not gross negligence to the loss that would ordinarily arise; these were read, but this paper does not assess them.
+
+\subsection{Accessibility}\label{sec:a11y}
+
+\paragraph{Risk.} The Act for Eliminating Discrimination against Persons with Disabilities defines a business operator as \statq{障害者差別解消法 第2条}{商業その他の事業を行う者} \summ{a person who carries on commerce or another business}, other than public bodies, and requires a business operator, when a person with a disability expresses a need, to make \statq{障害者差別解消法 第8条}{社会的障壁の除去の実施について必要かつ合理的な配慮をしなければならない} \summ{the necessary and reasonable accommodation to remove a social barrier}, unless the burden is excessive.
+
+\paragraph{What the sites do.} The design page does not decide whether the operator is such a business: \srcq{dl-business}. It lists what the site does, limited to what the checks verify: \srcq{dl-contrast} \srcq{dl-underline}
+
+\paragraph{Machine check.} A contrast script measures colour ratios on every page. Its own comment records how it came about: \srcq{contrast-faint} \summ{when first measured, the faint colour fell below the required ratio in the light scheme}. Further checks cover keyboard use \citeev{cps-keyboard}, and, since the design page was written, reduced motion and the labels of figures \citeev{audit-motion}.
+
+\paragraph{Residual risk and limits.} The site has never been tested with a screen reader: \srcq{sr-never} \summ{it has never been read aloud}. The record lists \nScreenQuestions{} questions to ask when it is. Checks verify properties of the markup, not whether a person with a disability can use the site. Requests for accommodation would arrive through the same issues and email as other requests; no separate route was found in the sources read.
+
+\subsection{Territorial scope}\label{sec:territory}
+
+\paragraph{Risk.} A site readable everywhere may be subject to the law of places where its users are. Some data protection laws require a service offered to people there to appoint a local representative, register, store data locally, or meet conditions before data leaves. A single unpaid operator cannot meet most of these.
+
+\paragraph{What the sites do.} Sophaxis, which collects personal data from submitters, does not offer its service in places where it cannot meet such duties: \srcq{sx-not-offered}. It keeps a table of these places, introduced by \ev{pr-sx-140}. At the pinned commit the table has \nPlaces{} rows, matching the \nPlacesStated{} that the policy states in words; \nPlacesFirst{} apply from 2026-11-22 and \nPlacesLater{} from 2026-11-26. Of the rows, the law was read at its source for \nPlacesYes{}, in part for \nPlacesPart{}, only as reported for \nPlacesReported{}, and could not be fetched for \nPlacesNotFetched{}. The policy names a survey of the laws of \nSurvey{} countries. The rule is cautious by design: \srcq{sx-added}. It does not turn on who a person is: \srcq{sx-nationality}.
+
+The profile site and the other repositories collect almost nothing and have no such table.
+
+\paragraph{Machine check.} For the places added from 2026-11-26, Sophaxis's check compares the table with the site's configuration, its legal review, its audit and its fetched texts, and also requires the change to have been entered in its feed of policy changes in advance; one of its messages of failure is \srcq{sx-check-places}.
+
+\paragraph{Residual risk and limits.} None of the foreign laws in the table was checked for this paper; the counts above say only what Sophaxis's own table states. A table built on reports may include places whose law does not in fact reach the service, and may miss places whose law does. Until the checked intake begins, Sophaxis relies on what the submitter confirms about where authors live and stay. And a policy of not offering a service is effective only so far as it can be enforced, which, for a site readable everywhere, is mainly at the point of submission.
+
+\subsection{Risks from the use of AI}\label{sec:ai}
+
+The domains above are old. This subsection collects the risks that arise because a language model writes much of the text and code, and the practices that answer them.
+
+\paragraph{Invented or misquoted law.} A model can produce an article number that does not exist, or a quotation with a word changed. The research repositories answer this with one rule, stated for example by legal-and-governance as \srcq{lg-fetch-only} \summ{articles are quoted only from text fetched from the e-Gov law API}. The profile site's own record of statutes explains its check as one that \srcq{canon-invented} \summ{stops invented articles}: an article that is not in the record cannot be cited in the disclaimer or the audits without a check failing. At the pinned commit that record (\ev{cps-statutes}) holds \nCanonArticles{} articles of \nCanonLaws{} laws and regulations, and \nCanonTerms{} entries for terms of services and licences, which are kept as hashes and short phrases rather than full copies. This paper applies the same rule to itself (Section~\ref{sec:repro}).
+
+\paragraph{Numbers that drift.} A model writing prose tends to state counts. The operator's rules require \srcq{claude-prose-numbers} \summ{when a number is written in prose, make it checkable by machine}. The record shows why. When the operator's rules first stated the number of merges without disclosure, the number was wrong: \srcq{claude-71} \summ{when first counted, a wrong number was written}. At one point the rules fixed the total number of merges instead, and \srcq{claude-fixed-count} \summ{it was written once that way, and failed at the next merge}. The rule now fixes only the number that should not change.
+
+\paragraph{Errors a reader does not see.} When the prose of the research repositories was rewritten in bulk from one style to another, a kind of rewriting that a model makes cheap, wrong verb forms with correct characters entered the text: \srcq{claude-conj} \summ{the characters are right, so the eye passes over them}. A check now stops the forms that actually occurred. The same pattern appeared in Section~\ref{sec:people}, where a translation said more about a living person than the original.
+
+\paragraph{Disclosure of the use of a language model.} The disclaimer says \srcq{disc-llm} \srcq{disc-responsible} That responsibility is a duty that no check can verify. Commits carry a co-author line naming the model, and merges are expected to carry it too. When the operator moved from pushing to main to merging pull requests through an API, merges lost the line, because \srcq{claude-api-merge} \summ{the API merge was given a title only, without the body}. The rules record \srcq{claude-merges} \summ{there are \nMergesNoDisclosure{} merges without disclosure across the \nDiscTen{} repositories}, which stay in the published history, and the cross-repository check compares that count with the history, so that a new merge without the lines fails. This paper's repository follows the same rule.
+
+\paragraph{Automation that acts on people's requests.} Automation that closes an issue may close a request that the law requires the operator to receive. The workflows described here that act on issues opened by others do not close or lock them. Of the checked intake, which labels error reports according to whether the quoted words occur in the named file, the disclaimer says \srcq{disc-intake-never}, and what it checks is limited: \srcq{disc-intake-what}. Of the workflow that answers an issue with an empty body, added by \ev{pr-cps-321}: \srcq{wf-empty}, and the disclaimer adds \srcq{disc-empty-none} The header of the checked intake's workflow says \srcq{wf-intake} Sophaxis applies the same rule to its own intake \citeev{sx-noclose}. One exception should be named: legal-and-governance's statute watcher opens an issue in its own repository when a recorded text changes, and closes that issue itself when everything matches again \citeev{lg-closes}. That issue is the watcher's own, not a person's.
+
+A related exposure was found in the workflow design: \srcq{disc-runname} An issue's title, which may contain personal information, is thus shown in the list of runs and kept there after the issue is edited. The workflows write neither title nor text into comments or logs, but they cannot change how GitHub names a run.
+
+\paragraph{Separation of the research series from the creative sites.} The profile site's cross-repository check fails if the research series or the profile names the operator's creative sites. Its check is named \srcq{eco-13c} \summ{the prose of the research series and the profile does not name the creative series}, and it covers a fixed set of repositories \citeev{eco-13c-count}. legal-and-governance has its own check \srcq{lg-names} \summ{no file names the operator's other creative places or points to their repositories}. legal-and-governance stores the names encoded, so that its check file does not itself contain them; the cross-repository check holds them as a pattern in a directory that its own scan leaves out.
+
+\paragraph{Residual risk and limits.} A rule that the model must fetch statutes is a rule about the model's work, which the operator cannot fully observe; the checks see only what reaches the repository. The use of the model is recorded in the lines of commits, but, as the count above shows, not in every merge. The services the sites run on may also use what they hold to train models; Sophaxis's terms say of the relevant setting of its host \srcq{sx-hobby} And the model's own judgements, for example that a row in an audit is ``no problem'', are checked by nothing but a later pass of the same kind.
+
+\subsection{The domains side by side}
+
+Table~\ref{tab:domains} sets the domains side by side. The column on checks names what a script tests; the last column names the main thing that no script tests.
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.17\textwidth}>{\raggedright\arraybackslash}p{0.25\textwidth}>{\raggedright\arraybackslash}p{0.25\textwidth}>{\raggedright\arraybackslash}p{0.25\textwidth}}
+\toprule
+Domain & Main practice & What a script tests & Main thing not tested \\
+\midrule
+Copyright, designs, trademarks & Own logo from simple shapes; no fonts served; licence stated per part & Shapes, colours, files and licence statements against the pages & Registers not searched; whether parts are works \\
+Personal information & Collect almost nothing; consent before issue text reaches the vendor & Consent sentence and copies of the form, byte for byte & Earlier provision; vendor's handling; whether the operator is a business operator \\
+Content of others & Takedown with prior notice to authors; immediate removal for serious harm & Policy sentences and the number of days & Whether the procedure meets the law it follows \\
+Statements about people & Living relatives only as ``parents'' & Patterns of words on listed pages & Statements that no pattern recognises \\
+Terms and contracts & Disclaimer that is not a contract; terms with advance notice & Days between announcement and effect & Whether a change is one the law allows \\
+Accessibility & Contrast, underlines, reduced motion & Colour ratios and markup & Use with assistive technology \\
+Territorial scope & Service not offered where duties cannot be met & Table against configuration and announcements & Whether each foreign law reaches the service \\
+Use of AI & Fetched statutes only; disclosure; no closing of requests & Quotations against fetched texts; disclosure lines; workflow code & The model's own judgements \\
+\bottomrule
+\end{tabular}
+\caption{The domains side by side. Each row summarises Section~\ref{sec:domains}.}\label{tab:domains}
+\end{table}
+
+\section{Compliance as code}\label{sec:cac}
+
+The domains differ, but the practices that recur across them have a common form. Each turns a legal commitment into a property of files that a script can test, runs the test on every change, and proves the test by breaking it. This paper calls the form compliance as code. Its parts in this case are the following.
+
+\subsection{Statute copies with hashes}
+Statutes are fetched from the e-Gov law API, reduced to plain text in a fixed way, and stored with the SHA-256 of that text. In legal-and-governance and in this paper's repository, every quotation must be a substring of a stored text; in the profile site, every article named in the disclaimer and the audits must be stored. The hash makes a later change in the official text visible, and the substring test makes a misquotation fail. legal-and-governance's tool for this, \ev{lg-tool}, was the model for the one this paper's repository uses.
+
+\subsection{One check from end to end}
+The check on statute quotations in this paper's repository shows the parts working together. A list names each article with its e-Gov law number, taken from an earlier record rather than from memory. A tool fetches each article, reduces it to plain text and records the text and its SHA-256. In the LaTeX source, a statute can be quoted only through a macro that takes the article and the words; the check reads every use of the macro and fails if the article is not in the list, if the words are not a substring of the recorded text, if the quotation is not followed by a labelled summary, or if an article is named anywhere else in the prose. A second check compares each recorded text with the copy that the profile site recorded earlier. The ways to break the first check include changing one character of a quotation, quoting an article that was not fetched, and naming an article in the prose; each must make the check fail. The check therefore stands between the model that drafts the text and the published PDF, and it does so in the one respect, the wording of the statute, where the model's errors are both likely and easy to test.
+
+\subsection{Watchers}
+A scheduled job fetches the texts again and compares them with the record. The watcher of legal-and-governance, set up in \ev{pr-lg-1}, runs weekly, with the schedule \srcq{lg-watch}, and opens an issue in its own repository when something differs. The watcher writes nothing to any other repository; a change to the record is made by a pull request. This paper's repository has a weekly comparison of the same kind, which fails its run and opens nothing.
+
+\subsection{Break tests}
+A check that cannot fail is worse than none, because it is believed. Several research repositories therefore keep, beside each check, ways to break its input, and a run that applies each and requires the check to fail. legal-and-governance's check fails if any check has no way to break it \citeev{lg-break}; at the pinned commit it has \nLgBreaks{} ways. The operator's rules forbid the opposite move: \srcq{claude-no-loosen} \summ{loosening a check to make it pass is the same as deleting it}.
+
+\subsection{Notice periods enforced by checks}
+A promise of advance notice becomes a check on dates: Sophaxis's check computes the days between the announcement of a change and its effective date (Section~\ref{sec:terms}). A promise to keep a copy identical becomes a hash comparison (Section~\ref{sec:pi}). A promise about what an automated workflow may do becomes a test that its code contains no call that closes or locks; the self-test of the checked intake reports that \srcq{intake-noclose-test}.
+
+\subsection{Verification in several independent ways}
+The operator's rules require every report, commit and merge to be verified \srcq{claude-ten} \summ{at least \nVerifyTimes{} times}, and specify that \srcq{claude-same-run} \summ{running the same check \nVerifyTimes{} times does not count as \nVerifyTimes{}}. The ways listed include running the repository's checks and the cross-repository check, reading the continuous-integration result, re-reading the sources and the diff, comparing with primary sources, recomputing numbers with a separate script, breaking a check, searching all repositories, comparing language versions and copies, and asking a separate reviewer without giving the conclusion.
+
+\subsection{What the method cannot do}
+Compliance as code tests the text of policies and the behaviour of scripts. It does not test the law. It can show that a quotation matches a statute, not that the statute applies, or that the operator's reading of it is right. It can show that a notice was given a fixed number of days before a change, not that the change is one the law allows. It can show that a form asks for consent, not that the consent is valid or that the information given is sufficient. It can enforce a rule that the operator chose, but not tell whether the rule is the right one. The correction described in Section~\ref{sec:pi}, on the provision of issue text abroad, was found by a pass that only read the sources, not by a check; a check was added afterwards, to keep the correction from being undone.
+
+\section{Discussion}\label{sec:discussion}
+
+Some observations from the case may apply beyond it, with the caution that a single case supports none of them strongly.
+
+First, several of the risks that the records corrected arose from the operator's own tools rather than from users. The provision of personal information abroad came from the use of a language model; a disclosure gap came from the way merges were made; and a statement about a living person came from a translation. These risks are created by automation and can be found by reading what the automation actually does.
+
+Second, the useful form of a legal commitment, for a single operator, is one that can fail. Commitments that cannot be tested, such as ``the operator reads every request'', remain promises. Commitments that can be tested, such as ``a change is announced at least \nNoticeDays{} days ahead'' or ``this quotation occurs in the statute'', can be kept by machine even when the operator's attention is elsewhere. The cost is that the commitment must be phrased narrowly enough to be tested, and that a narrow phrasing can miss what the law requires.
+
+Third, saying what was not checked appears to reduce risk at little cost. The operator's pages repeatedly state that something has not been checked: the trademark registers, the screen reader, the vendor's settings, the period before consent was asked. Such statements do not cure the gap, but they avoid adding a misrepresentation to it, and they give a reader the information needed to decide.
+
+A fourth observation concerns cost. The practices described here rely on public sources, such as the e-Gov law API, and on the continuous integration of the code host; Sophaxis's terms state that it is served on a free plan \citeev{sx-free}, while the plan of the profile site was not checked. The practices took a great deal of the operator's time and of the model's work, and they produced long policies and long check files. For a single operator, the binding constraint is attention, and a check is a way of spending attention once rather than at every change. The same property makes the practices fragile: a rule that only the operator understands, encoded in a check that only the model wrote, may outlive anyone's memory of why it exists. The records counter this by keeping, beside many checks, a comment that says which mistake the check was written to stop.
+
+A fifth observation concerns transfer. Several practices could be taken over by another operator with little change: fetching statutes from an official API and recording their hashes; generating every number in prose from data; keeping a registry of quoted sources and checking each quotation; breaking each check on purpose. Others depend on choices particular to this case, such as collecting almost no personal information, refusing service in places whose law cannot be met, and keeping every request open for a person to read. Those choices are what make the checks small enough to write.
+
+The case also suggests where the method should not be trusted. A check written by the same model that wrote the policy shares its blind spots. The profile site's audit was continued several times on the day it was begun, and each later pass found what earlier passes had missed, which suggests that the passes were not independent in the way the rules intend.
+
+\section{Limitations}\label{sec:limits}
+
+\paragraph{No lawyer.} No lawyer has reviewed this paper, the sites studied, or the audits counted. The legal readings reported are the operator's, written with a language model.
+
+\paragraph{The author is the operator.} The author operates every site and wrote, with a language model, every policy and check studied. The paper limits the effect of this by quoting rather than paraphrasing the sources, by generating every number and quotation from the sources at pinned commits, and by reporting what was not checked. It does not remove the conflict. An independent reading of the sites against the law would be needed for that, and none has been made.
+
+\paragraph{A single case.} The sites are small, non-commercial and run by one person in Japan. Nothing here shows how the practices would work for a larger site, a commercial one, or one run from elsewhere.
+
+\paragraph{Japanese law.} The statutes quoted are Japanese. Foreign law appears only through the policies that cite it and was not checked for this paper. The paper does not discuss case law, guidelines of authorities, or legal scholarship; a reading of a statute's text alone can be wrong in ways that such sources would show.
+
+\paragraph{What was not checked.} The paper does not check whether the operator is a business operator under any of the laws quoted; whether any visual part is a work; whether any foreign law reaches any site; whether the takedown procedure meets the conditions of the law it follows; whether the sites can be used with assistive technology; or how the language-model vendor keeps what it receives. Facts about the deployment that the repositories do not show, such as the hosting plan and account settings, were not read; the profile site's audit records the same gap \citeev{audit-tos-plan}. The repositories outside the case set, and the creative sites, were not studied.
+
+\paragraph{Evidence fixed in time.} Every source is read at a commit pinned on 2026-11-23. The policies of the sites change often, and several of those studied state rules that take effect later. What this paper says of a policy is true of the pinned version, not necessarily of the current one.
+
+\paragraph{No literature review.} The paper does not place the case in the literature on legal risk management, compliance automation or the governance of AI. It makes no claim of novelty beyond the case.
+
+\section{Conclusion}
+
+A single operator who uses a language model to write a group of small sites meets the same legal domains as a larger organisation. In this case, the operator managed them by keeping policies narrow, by saying what was not checked, and by turning commitments into checks that fail: quotations of statutes compared with fetched texts, numbers generated from sources, notice periods computed from dates, copies compared by hash, and automation that cannot close a person's request. The audit records show how much a careful review without a lawyer still finds, and the most important findings came from reading rather than from checks. Compliance as code kept corrections from being undone; it did not tell the operator what the law requires.
+
+\section*{Licence}
+This paper and its LaTeX source are licensed under the Creative Commons Attribution 4.0 International licence (CC BY 4.0). The scripts and checks in its repository are under the MIT licence. Statute texts and other texts quoted remain their owners'.
+
+\section*{Data and code availability}
+The LaTeX source, the scripts that generate every number, quotation and table, the recorded statute texts, the evidence registry and the checks are in the repository \texttt{site-legal-risk} of the GitHub account \texttt{cpsbvbng26-dotcom}. The sources are the repositories listed in Appendix~\ref{app:evidence}, at the commits given there. No DOI has been received for this paper, and none is written, under the operator's rule \srcq{claude-doi} \summ{do not fill in a DOI by guessing}.
+
+\section*{Disclosure of the use of a language model}
+Claude Code (Anthropic) was used for this paper: to read the repositories, to fetch and record the statutes, to write the scripts that compute every number and check every quotation and citation, and to draft the text. The author is responsible for the content. Claude is not an author.
+
+\appendix
+\section{How this paper is checked}\label{sec:repro}
+
+The repository of this paper holds the following checks, each with ways to break its input; a run fails if any way to break is not caught or if any check has none.
+
+\begin{itemize}
+\item Every pinned commit exists and is on its repository's main branch; every cited file exists at the pinned commit; every quotation printed occurs in its file; every cited commit exists and every cited pull request was merged.
+\item The generated numbers, tables and quotations equal what the generator computes from the pinned sources.
+\item Every Japanese quotation of a statute is a substring of the text fetched from the e-Gov law API; every article referred to is recorded; each recorded text equals the copy recorded by the profile site.
+\item No digit appears in the prose except through a generated macro, a date in the ledger, or a fixed form; no cardinal number is written as an English word.
+\item The page count and SHA-256 of the PDF equal those stated in the README.
+\item No file, and not the text of the PDF, names or links the operator's creative sites.
+\item The canonical copies equal their recorded hashes, and the author, licence and disclosure statements are present.
+\end{itemize}
+
+\section{Evidence}\label{app:evidence}
+
+The pinned commit is given for files; a pull request is identified by its number in the repository named.
+
+\small
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.24\textwidth}>{\raggedright\arraybackslash}p{0.22\textwidth}>{\raggedright\arraybackslash}p{0.36\textwidth}l}
+\toprule
+Item & Repository & File, commit or pull request & Pinned \\
+\midrule
+\endhead
+\csname @@input\endcsname generated/evidence.tex 
+\bottomrule
+\end{longtable}
+\normalsize
+
+\section{Statutes quoted}\label{app:statutes}
+
+Fetched from the e-Gov law API on 2026-11-23. The hash is the first part of the SHA-256 of the plain text recorded in \texttt{verification/statutes-texts.json}.
+
+\begin{longtable}{lll}
+\toprule
+Article & e-Gov law number & SHA-256 (first part) \\
+\midrule
+\endhead
+\csname @@input\endcsname generated/statutes.tex 
+\bottomrule
+\end{longtable}
+
+\end{document}
