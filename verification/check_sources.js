@@ -34,6 +34,10 @@ function context() {
   try { ctx.gen = G.build().out; } catch (e) { ctx.genErr = e.message; }
   const c = L.show('cpsbvbng26-dotcom', E.repos['cpsbvbng26-dotcom'], 'verification/statutes.json');
   ctx.canon = c === null ? null : JSON.parse(c);
+  ctx.fixtures = {
+    audit: ['| 判定 | 意味 |', '| --- | --- |', '| 誤り | 引用が違う |', '', '| 箇所 | 法令と条 | 要件 | 事実 | 判定 | 対応 |', '| --- | --- | --- | --- | --- | --- |', '| a | b | c | d | 誤り | e |', '| a | b | c | d | 問題なし | e |', 'text', '| x | y |'].join('\n'),
+    places: ['# Submission Policy', '## Who can submit', '', '| Place | What | Law | Read | From |', '| --- | --- | --- | --- | --- |', '| A | r | l | Yes | 2026-11-22 |', '| B | r | l | No | 2026-11-26 |', '', '## Next', '| Place | x |'].join('\n'),
+  };
   const C = L.json(F, 'verification/copies.json');
   const mainRef = L.mainRef('cpsbvbng26-dotcom');
   for (const f of Object.keys(C.copies)) {
@@ -119,6 +123,16 @@ check('the recorded hashes of the copies are those of the canonical files at the
   return bad;
 });
 
+check('the parsers of the generator count only the rows of tables of findings and of the table of places', (ctx) => {
+  const bad = [];
+  const md = ctx.fixtures.audit;
+  const f = G.findings(md, '判定');
+  if (JSON.stringify(f) !== JSON.stringify(['誤り', '問題なし'])) bad.push('findings() read ' + JSON.stringify(f));
+  const rows = G.placeRows(ctx.fixtures.places) || [];
+  if (rows.length !== 2 || rows[1][4] !== '2026-11-26') bad.push('placeRows() read ' + rows.length + ' rows');
+  return bad;
+});
+
 /* ------------------------------------------------------------ ways to break each check */
 const BREAKS = [];
 const brk = (i, desc, mut) => BREAKS.push({ name: CHECKS[i].name, desc, mut });
@@ -138,9 +152,11 @@ brk(2, 'cite a commit that does not exist', item('c-sx-notice', (r) => { r.exist
 brk(2, 'cite nothing', item('pr-rc-4', (r) => { delete r.item.pr; }));
 brk(3, 'edit a generated number by hand', (c) => { c.F.set('paper/generated/numbers.tex', c.F.get('paper/generated/numbers.tex').replace('\\newcommand{\\nPlaces}{43}', '\\newcommand{\\nPlaces}{44}')); });
 brk(3, 'edit a generated quotation by hand', (c) => { c.F.set('paper/generated/quotes.lua', c.F.get('paper/generated/quotes.lua').replace('not an offer of a contract', 'not a contract')); });
-brk(3, 'the source moves under the pin (generator output changes)', (c) => { c.gen['verification/numbers.json'] = c.gen['verification/numbers.json'].replace('"value": 690', '"value": 691'); });
+brk(3, 'the source moves under the pin (generator output changes)', (c) => { c.gen['verification/numbers.json'] = c.gen['verification/numbers.json'].replace(/"value": (\d+)/, (m, n) => '"value": ' + (Number(n) + 1)); });
 brk(4, 'a recorded statute text differs from the canonical copy', (c) => { c.canon['条文']['民法 第709条']['文'] = c.canon['条文']['民法 第709条']['文'].replace('故意又は過失', '故意又は重過失'); });
 brk(4, 'a law number differs', (c) => { c.canon['条文']['刑法 第230条']['e-Gov'] = '140AC0000000046'; });
+brk(6, 'count the legend table of the categories as findings', (c) => { c.fixtures.audit = c.fixtures.audit.replace('| 判定 | 意味 |', '| 判定 | 意味 | 注 | 例 | 欄 |'); });
+brk(6, 'a table of places with another row', (c) => { c.fixtures.places = c.fixtures.places.replace('| B |', '| C | r | l | Yes | 2026-11-22 |\n| B |'); });
 brk(5, 'the canonical file changed on main', (c) => { c.copiesMain['SECURITY.md'] = c.copiesMain['SECURITY.md'] + '\n'; });
 brk(5, 'the recorded hash is not that of the canonical file', (c) => { c.copiesAt['.github/workflows/empty-issue.yml'] = 'x'; });
 
