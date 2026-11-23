@@ -36,14 +36,16 @@ const CATS = [
   ['Error', '誤り', 'Error'],
 ];
 
-/* Pure: the findings of every row of every table whose header has the column. */
+/* Pure: the findings of every row of every table of findings whose header has the column. */
 function findings(md, column) {
   const out = [];
   let col = -1;
   for (const line of String(md).split('\n')) {
     if (!line.startsWith('|')) { col = -1; continue; }
     const cells = line.trim().replace(/^\||\|$/g, '').split('|').map((x) => x.trim());
-    if (cells.includes(column)) { col = cells.indexOf(column); continue; }
+    /* A table of findings has a row for each place (six columns). A short table that only explains the categories
+     * (two columns: the finding and its meaning) is not a table of findings. */
+    if (cells.includes(column)) { col = cells.length >= 5 ? cells.indexOf(column) : -1; continue; }
     if (/^[|\-:\s]+$/.test(line)) continue;
     if (col >= 0) out.push(cells[col] === undefined ? '' : cells[col]);
   }
