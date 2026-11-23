@@ -27,6 +27,25 @@ const NUMBER_WORDS = /\b(two|three|four|five|six|seven|eight|nine|ten|eleven|twe
 const KANJI_NUMBER = /[一二三四五六七八九十百千]+(?:つ|件|項目|通り|本|か所|人|条|日|年|回)/;
 const FIXED = [/一人の運営者の事例研究/g, /CC\s+BY\s+4\.0/g, /Attribution\s+4\.0\s+International/g, /SHA-256/g, /UTF-8/g, /0009-0000-1406-0547/g, /\d{4}-\d{2}-\d{2}/g];
 
+/* Organisations. The paper names no organisation except those the author founded (rule 18 of CLAUDE.md, 2026-11-23:
+ * 「論文の注意点、自分が創設したもの以外つまり団体名は一切かかないでね」). The list is built from the names that occur in the
+ * sources and in the operator's other repositories (the disclaimer's services, archives, registries, vendors, authorities,
+ * universities and platforms). Names are matched with their case, as whole words. The author's own projects are not in it.
+ * The licence identifiers "CC BY 4.0" and "MIT License" are names of legal instruments, kept like the names of statutes. */
+const ORGS = ['GitHub', 'Vercel', 'Anthropic', 'OpenAI', 'Google', 'Microsoft', 'Apple', 'iCloud', 'Amazon', 'Cloudflare', 'e-Gov', 'e-GOV',
+  'Zenodo', 'CERN', 'ORCID', 'orcid.org', 'DataCite', 'Crossref', 'JaLC', 'OSF', 'Center for Open Science', 'SSRN', 'Social Science Research Network',
+  'Legal Scholarship Network', 'Elsevier', 'Springer', 'Wiley', 'arXiv', 'Jxiv', 'PhilArchive', 'PhilPapers', 'Figshare', 'Internet Archive',
+  'Wayback Machine', 'OpenAlex', 'OpenAIRE', 'Semantic Scholar', 'Wikidata', 'Wikipedia', 'researchmap', 'J-STAGE', 'CiNii', 'HAL', 'Creative Commons',
+  'APEC', 'European Union', 'EU', 'OECD', 'United Nations', 'Personal Information Protection Commission', '個人情報保護委員会', 'Japan Patent Office',
+  '特許庁', 'Agency for Cultural Affairs', '文化庁', '総務省', '消費者庁', 'デジタル庁', 'Digital Agency', 'National Diet Library', '国立国会図書館', 'JACAR',
+  '防衛研究所', '東北大学', 'Tohoku University', 'edX', 'Coursera', 'Udemy', 'Georgia Tech', 'Georgia Institute of Technology', 'IPA',
+  'Information-technology Promotion Agency', 'Massachusetts Institute of Technology', 'W3C', 'World Wide Web Consortium', 'Debian', 'Ubuntu', 'Canonical',
+  'TeX Users Group', 'Grok', 'xAI', 'Facebook', 'Twitter', 'LinkedIn', 'YouTube', 'Slack', 'Dropbox', 'Open Archives Initiative', 'OAI-PMH',
+  'デジタル・アーカイブ', 'アジア歴史資料センター'];
+const ORG_RE = new RegExp('(?<![A-Za-z0-9])(?:' + ORGS.map((w) => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|') + ')(?![A-Za-z0-9])');
+const OWN = ['Sophaxis', 'cpsbvbng26-dotcom', 'researcher-profile', 'legal-and-governance', 'research-collaboration', 'deposit-check', 'errata-check', 'site-legal-risk'];
+const orgsIn = (s) => { let t = String(s); for (const w of OWN) t = t.split(w).join(' '); const m = ORG_RE.exec(t); return m ? m[0] : null; };
+
 /* ------------------------------------------------------------ reading the source of the paper */
 function macroArgs(t, name, n) {
   const out = [];
@@ -194,16 +213,30 @@ check('no file and not the text of the PDF names or links the operator\'s creati
   return bad;
 });
 
+check('the paper and the text of its PDF name no organisation except the author\'s own projects', (F, P) => {
+  const bad = [];
+  const tb = body(F.get(TEX) || '').replace(/(^|[^\\])%.*$/gm, '$1');
+  const a = orgsIn(tb);
+  if (a) bad.push(TEX + ': names ' + a);
+  const pre = String(F.get(TEX) || '').split('\\begin{document}')[0];
+  const b = orgsIn((/\\hypersetup\{[\s\S]*?\}\n/.exec(pre) || [''])[0] + (/\\title\{[^\n]*\}/.exec(pre) || [''])[0] + (/\\author\{[^\n]*\}/.exec(pre) || [''])[0]);
+  if (b) bad.push(TEX + ': names ' + b + ' in the title, author or PDF properties');
+  if (P.error) bad.push(P.error);
+  const c = orgsIn(P.text || '');
+  if (c) bad.push('PDF text names ' + c);
+  return bad;
+});
+
 check('the author, licence and disclosure statements are present, and there is no affiliation, self-title, task for the operator or DOI', (F) => {
   const bad = [];
   const t = F.get(TEX) || '';
   const flat = t.replace(/\s+/g, ' ');
   const authors = macroArgs(t, 'author', 1).map((m) => m.args[0].split('\\\\')[0].trim());
   if (JSON.stringify(authors) !== '["Takuya Nemoto"]') bad.push('the author line is not exactly Takuya Nemoto');
-  for (const s of ['\\section*{Disclosure of the use of a language model}', 'Claude Code (Anthropic)', 'Claude is not an author.', 'The author takes full responsibility for the content.',
-    '\\noindent\\textbf{Not legal advice.}', '\\noindent\\textbf{No lawyer has reviewed it.}', '\\noindent\\textbf{Conflict of interest.}', '\\section*{Licence}', '(CC BY 4.0)', 'MIT licence', 'The creative sites are excluded from the case set.']) if (!flat.includes(s)) bad.push('paper lacks: ' + s);
+  for (const s of ['\\section*{Disclosure of the use of a language model}', 'Claude Code was used', 'Claude is not an author.', 'The author takes full responsibility for the content.',
+    '\\noindent\\textbf{Not legal advice.}', '\\noindent\\textbf{No lawyer has reviewed it.}', '\\noindent\\textbf{Conflict of interest.}', '\\section*{Licence}', 'source are licensed under CC BY 4.0.', 'MIT licence', 'The creative sites are excluded from the case set.']) if (!flat.includes(s)) bad.push('paper lacks: ' + s);
   const disc = (flat.split('\\section*{Disclosure of the use of a language model}')[1] || '').split(/\\section|\\appendix/)[0];
-  for (const s of ['Claude Code (Anthropic) was used', 'The author is responsible for the content.', 'Claude is not an author.']) if (!disc.includes(s)) bad.push('the disclosure section lacks: ' + s);
+  for (const s of ['Claude Code was used', 'The author is responsible for the content.', 'Claude is not an author.']) if (!disc.includes(s)) bad.push('the disclosure section lacks: ' + s);
   for (const [f, s] of F) {
     if (typeof s !== 'string' || f === 'verification/check.js') continue;
     if (SCHOOL.some((re) => re.test(s))) bad.push(f + ': university name');
@@ -303,26 +336,32 @@ brk(5, 'name a creative site in the paper', texAdd(OTHER_PLACE[0][0].toUpperCase
 brk(5, 'name a creative site in Japanese in the README', add('README.md', '\n' + OTHER_PLACE[1] + 'は外しています。\n'));
 brk(5, 'link a repository outside the case set', add('README.en.md', '\n[x](https://github.com/cpsbvbng26-dotcom/' + OTHER_PLACE[3] + ')\n'));
 brk(5, 'link another Vercel site', add('README.md', '\nhttps://example-site.vercel.app/\n'));
-brk(5, 'the PDF text names a creative site', (F) => { F.set('(break)', ''); });
-brk(6, 'add Claude as an author', tex('\\author{Takuya Nemoto', '\\author{Takuya Nemoto \\and Claude'));
-brk(6, 'remove the disclosure', tex('The author is responsible for the content. Claude is not an author.', 'The author is responsible for the content.'));
-brk(6, 'remove the statement that it is not legal advice', tex('\\noindent\\textbf{Not legal advice.}', '\\noindent\\textbf{Advice.}'));
-brk(6, 'write an affiliation in CITATION.cff', sub('CITATION.cff', '    orcid: https://orcid.org/0009-0000-1406-0547', '    orcid: https://orcid.org/0009-0000-1406-0547\n    affiliation: X'));
-brk(6, 'write a self-title', add('README.en.md', '\n' + TITLES[1] + '\n'));
-brk(6, 'write a DOI that was not received', add('README.en.md', '\nDOI 10.2139/ssrn.0000000\n'));
-brk(6, 'give the operator a task', add('README.md', '\nSSRN への投稿は利用者の手作業です。\n'));
-brk(6, 'change the licence of the record', jsub('.zenodo.json', (j) => { j.license = 'mit'; }));
-brk(6, 'remove the sentence that excludes the creative sites', tex('The creative sites are excluded from the case set.', 'Some sites are excluded.'));
-brk(7, 'add bold text', add('README.md', '\n**大事です。**\n'));
-brk(7, 'write in the plain style', add('README.md', '\nこの稿は事例研究である。\n'));
-brk(7, 'second person in English', add('README.en.md', '\nYou can read the paper.\n'));
-brk(7, 'change the date of one README', sub('README.en.md', 'Last updated: ', 'Last updated: 2000-01-01, '));
-brk(7, 'two dashes in a paragraph', add('README.md', '\n検査 ― 機械 ― です。\n'));
-brk(7, 'a heading only in one language', add('README.en.md', '\n## Extra\n'));
-brk(8, 'call an action by its version name', sub('.github/workflows/verify.yml', /actions\/checkout@[0-9a-f]{40}/.exec(String(require('fs').readFileSync(require('path').join(L.ROOT, '.github/workflows/verify.yml'))))[0], 'actions/checkout@v7'));
-brk(8, 'give write access in a workflow of this repository', sub('.github/workflows/verify.yml', 'contents: read', 'contents: write'));
-brk(8, 'remove the permissions', sub('.github/workflows/statutes.yml', '\npermissions:\n  contents: read\n', '\n'));
-brk(8, 'add package.json', (F) => F.set('package.json', '{}'));
+brk(5, 'the PDF text names a creative site', (F) => { F.set('(break)', OTHER_PLACE[2]); });
+brk(6, 'put the ORCID URL back in the author block', tex('\\author{Takuya Nemoto}', '\\author{Takuya Nemoto\\\\ \\url{https://orcid.org/0009-0000-1406-0547}}'));
+brk(6, 'name the language-model vendor in the disclosure', tex('Claude Code was used for this paper', 'Claude Code (Anthropic) was used for this paper'));
+brk(6, 'name the law database in the Japanese abstract', tex('条文を政府の法令データベースから', '条文を e-Gov 法令 API から'));
+brk(6, 'name a code-hosting company in the prose', texAdd('The issues are kept on GitHub.'));
+brk(6, 'name a government body in Japanese', texAdd('\\ja{個人情報保護委員会の資料}'));
+brk(6, 'the PDF text names an organisation (from a quotation)', (F) => { F.set('(break)', 'Anthropic, United States'); });
+brk(7, 'add Claude as an author', tex('\\author{Takuya Nemoto', '\\author{Takuya Nemoto \\and Claude'));
+brk(7, 'remove the disclosure', tex('The author is responsible for the content. Claude is not an author.', 'The author is responsible for the content.'));
+brk(7, 'remove the statement that it is not legal advice', tex('\\noindent\\textbf{Not legal advice.}', '\\noindent\\textbf{Advice.}'));
+brk(7, 'write an affiliation in CITATION.cff', sub('CITATION.cff', '    orcid: https://orcid.org/0009-0000-1406-0547', '    orcid: https://orcid.org/0009-0000-1406-0547\n    affiliation: X'));
+brk(7, 'write a self-title', add('README.en.md', '\n' + TITLES[1] + '\n'));
+brk(7, 'write a DOI that was not received', add('README.en.md', '\nDOI 10.2139/ssrn.0000000\n'));
+brk(7, 'give the operator a task', add('README.md', '\nSSRN への投稿は利用者の手作業です。\n'));
+brk(7, 'change the licence of the record', jsub('.zenodo.json', (j) => { j.license = 'mit'; }));
+brk(7, 'remove the sentence that excludes the creative sites', tex('The creative sites are excluded from the case set.', 'Some sites are excluded.'));
+brk(8, 'add bold text', add('README.md', '\n**大事です。**\n'));
+brk(8, 'write in the plain style', add('README.md', '\nこの稿は事例研究である。\n'));
+brk(8, 'second person in English', add('README.en.md', '\nYou can read the paper.\n'));
+brk(8, 'change the date of one README', sub('README.en.md', 'Last updated: ', 'Last updated: 2000-01-01, '));
+brk(8, 'two dashes in a paragraph', add('README.md', '\n検査 ― 機械 ― です。\n'));
+brk(8, 'a heading only in one language', add('README.en.md', '\n## Extra\n'));
+brk(9, 'call an action by its version name', sub('.github/workflows/verify.yml', /actions\/checkout@[0-9a-f]{40}/.exec(String(require('fs').readFileSync(require('path').join(L.ROOT, '.github/workflows/verify.yml'))))[0], 'actions/checkout@v7'));
+brk(9, 'give write access in a workflow of this repository', sub('.github/workflows/verify.yml', 'contents: read', 'contents: write'));
+brk(9, 'remove the permissions', sub('.github/workflows/statutes.yml', '\npermissions:\n  contents: read\n', '\n'));
+brk(9, 'add package.json', (F) => F.set('package.json', '{}'));
 
 function run(F, P) { return CHECKS.map((c) => ({ name: c.name, bad: c.fn(F, P) })); }
 
@@ -336,7 +375,7 @@ if (require.main === module) {
       let caught = false, err = null;
       try {
         b.mut(G);
-        const Q = G.has('(break)') ? Object.assign({}, P, { text: (P.text || '') + ' ' + OTHER_PLACE[2] }) : G.get(PDF) === F.get(PDF) ? P : pdfFacts(G);
+        const Q = G.has('(break)') ? Object.assign({}, P, { text: (P.text || '') + ' ' + G.get('(break)') }) : G.get(PDF) === F.get(PDF) ? P : pdfFacts(G);
         G.delete('(break)');
         caught = CHECKS.find((c) => c.name === b.name).fn(G, Q).length > 0;
       } catch (e) { err = e.message; }
