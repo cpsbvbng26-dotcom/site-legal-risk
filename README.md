@@ -18,17 +18,17 @@ English: [README.en.md](README.en.md)。
 - PDF：[paper/site-legal-risk.pdf](paper/site-legal-risk.pdf)
 - 原稿：[paper/site-legal-risk.tex](paper/site-legal-risk.tex)
 - 頁数: 22
-- 語数（pdftotext の出力を空白で区切った数）: 10542
-- SHA-256: `f53989f6ec45cf976522dd87c00e0a20af847ae71d935a17a402a58e4f7456c8`
+- 語数（pdftotext の出力を空白で区切った数）: 10502
+- SHA-256: `24ad193beecb742a0bdfeb34e3bb93c97a29034e9ce724c9d582ed5f14793382`
 
 キーワード：legal risk management、website operation、compliance as code、personal information、cross-border data transfer、generative AI、Japanese law、case study。
 
 SSRN の分類の候補は、法学（情報法、データ保護、知的財産、法と技術・AI の、法令遵守の事例研究）です。
 副は情報システム（compliance as code の部分）です。
-SSRN のネットワークでいえば、Legal Scholarship Network と、副として Information Systems に当たります。
-この名は、SSRN のいまの一覧と照らしていません。
-作業の環境から SSRN を読めないためです。
-同じ理由で、eJournal の名は挙げていません。
+SSRN のネットワークでいえば、法学のネットワークと、副として情報システムのネットワークに当たります。
+作業の環境から SSRN を読めないため、ネットワークと eJournal の名は SSRN のいまの一覧と照らしていません。
+この分類の注は README にだけ置き、稿には置いていません。
+稿は、著者が創設したもののほかの団体の名を書かないからです。
 
 ## 提出と DOI
 

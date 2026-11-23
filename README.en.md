@@ -18,17 +18,17 @@ Each is cited by repository, file, commit or pull request.
 - PDF: [paper/site-legal-risk.pdf](paper/site-legal-risk.pdf)
 - Source: [paper/site-legal-risk.tex](paper/site-legal-risk.tex)
 - Pages: 22
-- Words (tokens of the pdftotext output separated by white space): 10542
-- SHA-256: `f53989f6ec45cf976522dd87c00e0a20af847ae71d935a17a402a58e4f7456c8`
+- Words (tokens of the pdftotext output separated by white space): 10502
+- SHA-256: `24ad193beecb742a0bdfeb34e3bb93c97a29034e9ce724c9d582ed5f14793382`
 
 Keywords: legal risk management, website operation, compliance as code, personal information, cross-border data transfer, generative AI, Japanese law, case study.
 
 The suggested SSRN classification is law, as a compliance case study in information and cyber law, data protection, intellectual property, and law and technology (AI).
 The secondary area is information systems, for the part on compliance as code.
-At the level of SSRN's networks, this is the Legal Scholarship Network and, secondarily, Information Systems.
-These names were not checked against SSRN's current list.
-SSRN could not be read from the environment in which the paper was prepared.
-For the same reason, no eJournal is named.
+At the level of SSRN's networks, this is the law network and, secondarily, the information-systems network.
+SSRN could not be read from the environment in which the paper was prepared, so the names of networks and eJournals were not checked against its current list.
+This note on classification is in the README only, not in the paper.
+The paper names no organisation other than those the author founded.
 
 ## Submission and DOI
 
