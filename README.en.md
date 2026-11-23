@@ -18,8 +18,8 @@ Each is cited by repository, file, commit or pull request.
 - PDF: [paper/site-legal-risk.pdf](paper/site-legal-risk.pdf)
 - Source: [paper/site-legal-risk.tex](paper/site-legal-risk.tex)
 - Pages: 22
-- Words (tokens of the pdftotext output separated by white space): 10528
-- SHA-256: `afdbebcf261bcf68c7d6c849afc8b5c757bd4da375b4c34e3957c261c04d694d`
+- Words (tokens of the pdftotext output separated by white space): 10542
+- SHA-256: `f53989f6ec45cf976522dd87c00e0a20af847ae71d935a17a402a58e4f7456c8`
 
 Keywords: legal risk management, website operation, compliance as code, personal information, cross-border data transfer, generative AI, Japanese law, case study.
 

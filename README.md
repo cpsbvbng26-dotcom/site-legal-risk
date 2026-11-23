@@ -18,8 +18,8 @@ English: [README.en.md](README.en.md)。
 - PDF：[paper/site-legal-risk.pdf](paper/site-legal-risk.pdf)
 - 原稿：[paper/site-legal-risk.tex](paper/site-legal-risk.tex)
 - 頁数: 22
-- 語数（pdftotext の出力を空白で区切った数）: 10528
-- SHA-256: `afdbebcf261bcf68c7d6c849afc8b5c757bd4da375b4c34e3957c261c04d694d`
+- 語数（pdftotext の出力を空白で区切った数）: 10542
+- SHA-256: `f53989f6ec45cf976522dd87c00e0a20af847ae71d935a17a402a58e4f7456c8`
 
 キーワード：legal risk management、website operation、compliance as code、personal information、cross-border data transfer、generative AI、Japanese law、case study。
 
