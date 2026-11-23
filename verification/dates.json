@@ -1,0 +1,12 @@
+{
+  "_": [
+    "Each date that the paper or the README prints, and where it comes from. verification/check.js fails on a date that is not here; verification/check_sources.js checks that the date occurs in the cited file at its pinned commit (for a file) or is the date of the cited commit, and verification/check.js checks the local ones."
+  ],
+  "dates": {
+    "2026-11-12": { "evidence": "audit-not-advice" },
+    "2026-11-13": { "evidence": "audit-17-date" },
+    "2026-11-22": { "evidence": "sx-not-offered" },
+    "2026-11-26": { "evidence": "sx-not-offered" },
+    "2026-11-23": { "local": "verification/statutes.json", "field": "fetched" }
+  }
+}
