@@ -78,6 +78,13 @@
       "quote": "The operator treats the title and text of an issue opened by anyone other than the operator, when given to Claude, as a provision of personal data to a third party in a foreign country under Article 28 of Japan's Act on the Protection of Personal Information."
     },
     {
+      "id": "disc-required",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "DISCLAIMER.en.md",
+      "lang": "en",
+      "quote": "The error report form (error-report.yml) shows this section and asks, in a required box, for consent to giving the title and text to Claude."
+    },
+    {
       "id": "disc-only-ticked",
       "repo": "cpsbvbng26-dotcom",
       "path": "DISCLAIMER.en.md",
@@ -124,14 +131,14 @@
       "repo": "cpsbvbng26-dotcom",
       "path": "DISCLAIMER.en.md",
       "lang": "en",
-      "quote": "GitHub shows the title the issue has at that moment as the name of the run in the Actions list."
+      "quote": "shows the title the issue has at that moment as the name of the run"
     },
     {
       "id": "disc-llm",
       "repo": "cpsbvbng26-dotcom",
       "path": "DISCLAIMER.en.md",
       "lang": "en",
-      "quote": "Parts of the texts and code are written with Claude Code (Anthropic) at the operator's request."
+      "quote": "Parts of the texts and code are written with Claude Code"
     },
     {
       "id": "disc-responsible",
@@ -348,7 +355,7 @@
       "repo": "cpsbvbng26-dotcom",
       "path": ".github/ISSUE_TEMPLATE/error-report.yml",
       "lang": "en",
-      "quote": "I consent to the operator giving the title and text of this issue to Claude (Anthropic, United States). required: true"
+      "quote": "I consent to the operator giving the title and text of this issue to Claude"
     },
     {
       "id": "wf-empty",
@@ -405,7 +412,7 @@
       "repo": "sophaxis",
       "path": "policies/takedown.md",
       "lang": "en",
-      "quote": "For personal data and other serious harm, the record page (its title, authors, abstract and PDF copy) is taken offline at once, before the decision, while GitHub Actions runs for Sophaxis, and OAI-PMH reports the record as deleted until it is put back."
+      "quote": "the record page (its title, authors, abstract and PDF copy) is taken offline at once, before the decision"
     },
     {
       "id": "sx-hand",
@@ -480,7 +487,7 @@
       "repo": "legal-and-governance",
       "path": "CLAUDE.md",
       "lang": "ja",
-      "quote": "条文は、e-Gov 法令 API から取り寄せた文だけを引く"
+      "quote": "法令の番号を記憶から書かない"
     },
     {
       "id": "lg-watch",
@@ -506,7 +513,7 @@
       "repo": "research-collaboration",
       "path": "policies/privacy.en.md",
       "lang": "en",
-      "quote": "Only for an issue whose consent box is ticked, the operator may give its title and text to Claude (Anthropic, United States)."
+      "quote": "Only for an issue whose consent box is ticked, the operator may give its title and text to Claude"
     },
     {
       "id": "rc-human",
