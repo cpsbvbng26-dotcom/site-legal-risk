@@ -1,0 +1,23 @@
+{
+  "title": "Legal Risk Management by Domain for Website Operation in the Age of AI: A Case Study of a Single Operator's Sites: source, PDF and checks (site-legal-risk)",
+  "description": "<p>The LaTeX source, the typeset PDF, the scripts that generate every number, quotation and table of the paper from pinned commits of the sources, the recorded statute texts fetched from the e-Gov law API, and the checks of the paper \"Legal Risk Management by Domain for Website Operation in the Age of AI: A Case Study of a Single Operator's Sites\". The paper is not peer-reviewed and is not legal advice. No lawyer has reviewed it. The author operates the sites it studies.</p><p>AI 時代のサイト運営における分野ごとの法務リスク管理の事例研究の、原稿・PDF・台本・検査を置いたリポジトリです。</p>",
+  "upload_type": "software",
+  "license": "cc-by-4.0",
+  "access_right": "open",
+  "language": "eng",
+  "creators": [
+    {
+      "name": "Nemoto, Takuya",
+      "orcid": "0009-0000-1406-0547"
+    }
+  ],
+  "keywords": [
+    "legal risk management",
+    "website operation",
+    "compliance as code",
+    "personal information",
+    "generative AI",
+    "Japanese law"
+  ],
+  "notes": "Claude Code (Anthropic) was used to read the repositories, to fetch and record the statutes, to write the scripts and checks, and to draft the text. The author is responsible for the content. Claude is not an author. The paper, its LaTeX source and the prose are CC BY 4.0 (LICENSE); the scripts and the checks are MIT (LICENSE-CODE). The licence field of this record covers the paper, its LaTeX source and the prose only. Statute texts and other texts by others that this repository quotes, or keeps to verify its quotations, are not licensed under CC BY 4.0 or the MIT License and remain their owners'."
+}

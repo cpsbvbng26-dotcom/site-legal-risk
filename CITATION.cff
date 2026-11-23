@@ -1,0 +1,34 @@
+cff-version: 1.2.0
+title: "Legal Risk Management by Domain for Website Operation in the Age of AI: A Case Study of a Single Operator's Sites"
+message: >-
+  このリポジトリは、上の題の稿の LaTeX の原稿、組んだ PDF、紙面の数と引用を出す台本と検査を置いています。
+  稿は SSRN に出すためのもので、DOI はまだ受け取っていません。受け取るまで番号を書きません。
+  稿と散文は CC BY 4.0、台本と検査は MIT です。引いた条文とほかの人の文は、それぞれの持ち主のものです。
+  稿は法的な助言ではありません。弁護士は見ていません。著者は、稿が扱うサイトの運営者です。
+  言語モデル Claude Code（Anthropic）を使いました。責任は著者が負います。Claude は著者ではありません。
+type: software
+authors:
+  - family-names: Nemoto
+    given-names: Takuya
+    orcid: https://orcid.org/0009-0000-1406-0547
+repository-code: https://github.com/cpsbvbng26-dotcom/site-legal-risk
+license:
+  - CC-BY-4.0
+  - MIT
+date-released: 2026-11-23
+keywords:
+  - legal risk management
+  - website operation
+  - compliance as code
+  - personal information
+  - generative AI
+  - Japanese law
+preferred-citation:
+  type: article
+  title: "Legal Risk Management by Domain for Website Operation in the Age of AI: A Case Study of a Single Operator's Sites"
+  authors:
+    - family-names: Nemoto
+      given-names: Takuya
+      orcid: https://orcid.org/0009-0000-1406-0547
+  year: 2026
+  notes: "Working paper. Not peer-reviewed. Not legal advice. No DOI has been received."

@@ -1,0 +1,796 @@
+{
+  "_": [
+    "Every repository, file, quotation, commit and pull request that the paper cites as evidence.",
+    "repos gives, for each repository, the commit at which the paper reads it. verification/check_sources.js checks that each commit is on the repository's main, that each cited file exists at that commit, that each quotation occurs in the file (after the normalisation described in that script), that each commit exists, and that each pull request was merged into main.",
+    "The paper prints a quotation only through \\srcq{id}, so the printed words are generated from this file (scripts/generate.js writes paper/evidence.tex)."
+  ],
+  "repos": {
+    "cpsbvbng26-dotcom": "c3b4a45bc5adcd7ce86b1d2dde7905037ec041e3",
+    "researcher-profile": "e99098be1c9e5d4fb21e57d65d3d29e944414252",
+    "sophaxis": "5a9c35849e83aabc074a09f65ea3119ac3cb1465",
+    "legal-and-governance": "00e2dc5e17322ffeda3ec426e88f6709688a6361",
+    "research-collaboration": "8a2ba3140c430913439d871de5a9334f8a9b7f62",
+    "deposit-check": "6fc9c8758caf281a743f60ba26caae6ad8411002",
+    "errata-check": "70523c293d62b0e6c2dba33e32dd531e1962623d"
+  },
+  "items": [
+    {
+      "id": "disc-contract",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "DISCLAIMER.en.md",
+      "lang": "en",
+      "quote": "This page is not an offer of a contract."
+    },
+    {
+      "id": "disc-agree",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "DISCLAIMER.en.md",
+      "lang": "en",
+      "quote": "Reading or using these works is not taken as agreement to anything."
+    },
+    {
+      "id": "disc-liab",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "DISCLAIMER.en.md",
+      "lang": "en",
+      "quote": "This page neither excludes nor limits that liability."
+    },
+    {
+      "id": "disc-art8",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "DISCLAIMER.en.md",
+      "lang": "en",
+      "quote": "The operator sets no clause that Paragraph 1 of Article 8 of that Act makes void."
+    },
+    {
+      "id": "disc-people",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "DISCLAIMER.en.md",
+      "lang": "en",
+      "quote": "Of living family members, nothing is written beyond the word \"parents\"."
+    },
+    {
+      "id": "disc-people-email",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "DISCLAIMER.en.md",
+      "lang": "en",
+      "quote": "A request that contains personal information is received by email, not in a public issue."
+    },
+    {
+      "id": "disc-cookie",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "DISCLAIMER.en.md",
+      "lang": "en",
+      "quote": "The pages set no cookie and carry no analytics."
+    },
+    {
+      "id": "disc-business",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "DISCLAIMER.en.md",
+      "lang": "en",
+      "quote": "Whether or not the operator is a business handling personal information, the operator follows what the Act on the Protection of Personal Information requires of such a business."
+    },
+    {
+      "id": "disc-art28",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "DISCLAIMER.en.md",
+      "lang": "en",
+      "quote": "The operator treats the title and text of an issue opened by anyone other than the operator, when given to Claude, as a provision of personal data to a third party in a foreign country under Article 28 of Japan's Act on the Protection of Personal Information."
+    },
+    {
+      "id": "disc-required",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "DISCLAIMER.en.md",
+      "lang": "en",
+      "quote": "The error report form (error-report.yml) shows this section and asks, in a required box, for consent to giving the title and text to Claude."
+    },
+    {
+      "id": "disc-only-ticked",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "DISCLAIMER.en.md",
+      "lang": "en",
+      "quote": "Only the title and text of an issue opened with that box ticked are given to Claude."
+    },
+    {
+      "id": "disc-other-forms",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "DISCLAIMER.en.md",
+      "lang": "en",
+      "quote": "An issue from another form, and an issue opened without a form, are given neither to Claude nor to any other language model."
+    },
+    {
+      "id": "disc-settings",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "DISCLAIMER.en.md",
+      "lang": "en",
+      "quote": "Those settings have not been checked for this page."
+    },
+    {
+      "id": "disc-intake-never",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "DISCLAIMER.en.md",
+      "lang": "en",
+      "quote": "The checked intake never closes or locks an issue; the operator reads every one."
+    },
+    {
+      "id": "disc-intake-what",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "DISCLAIMER.en.md",
+      "lang": "en",
+      "quote": "What is checked is the words of an existing document, not whether they are wrong."
+    },
+    {
+      "id": "disc-empty-none",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "DISCLAIMER.en.md",
+      "lang": "en",
+      "quote": "No issue is closed, locked or deleted."
+    },
+    {
+      "id": "disc-runname",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "DISCLAIMER.en.md",
+      "lang": "en",
+      "quote": "shows the title the issue has at that moment as the name of the run"
+    },
+    {
+      "id": "disc-llm",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "DISCLAIMER.en.md",
+      "lang": "en",
+      "quote": "Parts of the texts and code are written with Claude Code"
+    },
+    {
+      "id": "disc-responsible",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "DISCLAIMER.en.md",
+      "lang": "en",
+      "quote": "The operator checks the content and is responsible for it."
+    },
+    {
+      "id": "claude-doi",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "CLAUDE.md",
+      "lang": "ja",
+      "quote": "DOI を推測で埋めない"
+    },
+    {
+      "id": "claude-people",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "CLAUDE.md",
+      "lang": "ja",
+      "quote": "存命の人物は「両親」という語までにする。"
+    },
+    {
+      "id": "claude-ten",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "CLAUDE.md",
+      "lang": "ja",
+      "quote": "合っているかを、最低 10 回確かめる。"
+    },
+    {
+      "id": "claude-same-run",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "CLAUDE.md",
+      "lang": "ja",
+      "quote": "同じ検査を 10 回走らせても 10 回にはならない。"
+    },
+    {
+      "id": "claude-merges",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "CLAUDE.md",
+      "lang": "ja",
+      "quote": "開示の無いマージが、10 リポジトリ合わせて 63 件ある。"
+    },
+    {
+      "id": "claude-no-loosen",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "CLAUDE.md",
+      "lang": "ja",
+      "quote": "検査を緩めて通すのは、検査を消すのと同じである。"
+    },
+    {
+      "id": "claude-prose-numbers",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "CLAUDE.md",
+      "lang": "ja",
+      "quote": "散文に数を書いたら、その数を機械で確かめられるようにする。"
+    },
+    {
+      "id": "audit-memory",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "docs/legal-audit-2026-11-12.md",
+      "lang": "ja",
+      "quote": "条文は記憶から書いていません。"
+    },
+    {
+      "id": "audit-no-lawyer",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "docs/legal-audit-2026-11-12.md",
+      "lang": "ja",
+      "quote": "弁護士は、この点検を見ていません。"
+    },
+    {
+      "id": "audit-not-advice",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "docs/legal-audit-2026-11-12.md",
+      "lang": "ja",
+      "quote": "この頁は運営者の立場を記録するもので、読む人への法的な助言ではありません。"
+    },
+    {
+      "id": "audit-art57",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "docs/legal-audit-2026-11-12.md",
+      "lang": "ja",
+      "quote": "この除外には頼らない。記録だけ"
+    },
+    {
+      "id": "audit-tos-plan",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "docs/legal-audit-2026-11-12.md",
+      "lang": "ja",
+      "quote": "Vercel のどの計画で配っているかは、確かめていません。"
+    },
+    {
+      "id": "audit-old-act",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "docs/legal-audit-2026-11-12.md",
+      "lang": "ja",
+      "quote": "旧著作権法（明治32年法律第39号）は取り寄せていません。"
+    },
+    {
+      "id": "dl-no-lawyer",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "notes/design-legal.en.html",
+      "lang": "en",
+      "quote": "This page has not been reviewed by a lawyer."
+    },
+    {
+      "id": "dl-summary",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "notes/design-legal.en.html",
+      "lang": "en",
+      "quote": "The English beside them is a summary, not a translation; no government translation is used or guessed."
+    },
+    {
+      "id": "dl-fineart",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "notes/design-legal.en.html",
+      "lang": "en",
+      "quote": "Whether the logo, ornaments, figure, colours or layout of this site are works of fine art is not settled by the text of the Act. This page decides neither way."
+    },
+    {
+      "id": "dl-logo",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "notes/design-legal.en.html",
+      "lang": "en",
+      "quote": "No glyph, photograph or other person’s design is used."
+    },
+    {
+      "id": "dl-fonts",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "notes/design-legal.en.html",
+      "lang": "en",
+      "quote": "There is no @font-face and no font file."
+    },
+    {
+      "id": "dl-registers",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "notes/design-legal.en.html",
+      "lang": "en",
+      "quote": "Whether this logo or the look of these pages is the same as or similar to someone else’s registered trademark or design has not been checked, because the registers have not been searched."
+    },
+    {
+      "id": "dl-business",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "notes/design-legal.en.html",
+      "lang": "en",
+      "quote": "Whether the operator is a “business operator” under this Act is not settled by the text of the Act."
+    },
+    {
+      "id": "dl-contrast",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "notes/design-legal.en.html",
+      "lang": "en",
+      "quote": "The ratio of body text colours ( --text , --muted , --faint , --accent ) to the background is at least 4.5:1, in the light and the dark scheme."
+    },
+    {
+      "id": "dl-underline",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "notes/design-legal.en.html",
+      "lang": "en",
+      "quote": "Links in body text are shown by an underline as well as by colour, so that colour is not the only cue."
+    },
+    {
+      "id": "dl-csp",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "notes/design-legal.en.html",
+      "lang": "en",
+      "quote": "The CSP of each page starts from default-src 'none' and allows no outside host."
+    },
+    {
+      "id": "sr-never",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "docs/screen-reader.md",
+      "lang": "ja",
+      "quote": "まだ一度も読み上げていません。"
+    },
+    {
+      "id": "contrast-faint",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "verification/check_contrast.js",
+      "lang": "ja",
+      "quote": "一度これで測ったところ、--faint がライトで 2.65:1 しかなかった。"
+    },
+    {
+      "id": "site-kin",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "verification/check_site.js",
+      "lang": "ja",
+      "quote": "存命の人物が、続柄の一語を超えて出ていない"
+    },
+    {
+      "id": "site-kin-attr",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "verification/check_site.js",
+      "lang": "ja",
+      "quote": "両親に、考え・同意・計画・気持ちを帰す文が無い"
+    },
+    {
+      "id": "site-kin-translation",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "verification/check_site.js",
+      "lang": "ja",
+      "quote": "英語版だけが、存命の第三者の事業計画を書いていた。"
+    },
+    {
+      "id": "eco-13c",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "verification/check_ecosystem.js",
+      "lang": "ja",
+      "quote": "研究の系列とプロフィールの散文は、創作の系列の名を書かない"
+    },
+    {
+      "id": "form-consent",
+      "repo": "cpsbvbng26-dotcom",
+      "path": ".github/ISSUE_TEMPLATE/error-report.yml",
+      "lang": "en",
+      "quote": "I consent to the operator giving the title and text of this issue to Claude"
+    },
+    {
+      "id": "wf-empty",
+      "repo": "cpsbvbng26-dotcom",
+      "path": ".github/workflows/empty-issue.yml",
+      "lang": "en",
+      "quote": "It closes nothing, locks nothing and deletes nothing."
+    },
+    {
+      "id": "wf-intake",
+      "repo": "cpsbvbng26-dotcom",
+      "path": ".github/workflows/checked-intake.yml",
+      "lang": "en",
+      "quote": "It never closes or locks an issue (2026-11-15): every issue stays open for a person."
+    },
+    {
+      "id": "cps-statutes",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "verification/statutes.json"
+    },
+    {
+      "id": "rp-design-legal",
+      "repo": "researcher-profile",
+      "path": "design-legal.en.json"
+    },
+    {
+      "id": "rp-audit",
+      "repo": "researcher-profile",
+      "path": "docs/legal-audit-2026-11-12.md"
+    },
+    {
+      "id": "sx-not-offered",
+      "repo": "sophaxis",
+      "path": "policies/submission.md",
+      "lang": "en",
+      "quote": "Sophaxis does not offer its service there, because it meets none of the duties that the law there places, or is reported to place, on a service offered to people there"
+    },
+    {
+      "id": "sx-nationality",
+      "repo": "sophaxis",
+      "path": "policies/submission.md",
+      "lang": "en",
+      "quote": "This rule does not depend on nationality, race, ethnic origin or any other personal characteristic, and Sophaxis never reads an author's nationality."
+    },
+    {
+      "id": "sx-added",
+      "repo": "sophaxis",
+      "path": "policies/submission.md",
+      "lang": "en",
+      "quote": "A place is added to the list as soon as such a duty is reported, before its law has been read at its source, and it is taken off only after that law has been read at its source and found not to reach Sophaxis."
+    },
+    {
+      "id": "sx-offline",
+      "repo": "sophaxis",
+      "path": "policies/takedown.md",
+      "lang": "en",
+      "quote": "the record page (its title, authors, abstract and PDF copy) is taken offline at once, before the decision"
+    },
+    {
+      "id": "sx-hand",
+      "repo": "sophaxis",
+      "path": "policies/takedown.md",
+      "lang": "en",
+      "quote": "While they do not run, the operator takes these steps by hand, as soon as the operator learns of the request, and the record page is then not taken offline at once."
+    },
+    {
+      "id": "sx-seven",
+      "repo": "sophaxis",
+      "path": "policies/takedown.md",
+      "lang": "en",
+      "quote": "if no objection reaches the operator within 7 days from the day the question is posted, the operator may remove it."
+    },
+    {
+      "id": "sx-notice",
+      "repo": "sophaxis",
+      "path": "policies/terms.md",
+      "lang": "en",
+      "quote": "The announcement comes at least 14 days ahead, unless the law or an urgent problem, such as a security or legal risk, requires the change sooner."
+    },
+    {
+      "id": "sx-silence",
+      "repo": "sophaxis",
+      "path": "policies/terms.md",
+      "lang": "en",
+      "quote": "Silence, or continuing to use Sophaxis, is not taken as agreement to a change."
+    },
+    {
+      "id": "sx-authors",
+      "repo": "sophaxis",
+      "path": "policies/terms.md",
+      "lang": "en",
+      "quote": "The authors bear full responsibility for their work and for its listing on Sophaxis."
+    },
+    {
+      "id": "sx-table-caution",
+      "repo": "sophaxis",
+      "path": "policies/terms.md",
+      "lang": "en",
+      "quote": "The table lists possible paths only. It is not complete. It does not say that a listed act is unlawful, or that an act not listed is lawful."
+    },
+    {
+      "id": "sx-hobby",
+      "repo": "sophaxis",
+      "path": "policies/terms.md",
+      "lang": "en",
+      "quote": "The operator has not confirmed that this setting is turned off for the Sophaxis account."
+    },
+    {
+      "id": "sx-check-notice",
+      "repo": "sophaxis",
+      "path": "verification/check.js",
+      "lang": "en",
+      "quote": "bad.push('the change is not announced 14 days ahead')"
+    },
+    {
+      "id": "sx-noclose",
+      "repo": "sophaxis",
+      "path": "CLAUDE.md",
+      "lang": "ja",
+      "quote": "どの issue も閉じず、鍵も掛けない。"
+    },
+    {
+      "id": "sx-audit",
+      "repo": "sophaxis",
+      "path": "docs/legal-audit-2026-11-12.md"
+    },
+    {
+      "id": "lg-fetch-only",
+      "repo": "legal-and-governance",
+      "path": "CLAUDE.md",
+      "lang": "ja",
+      "quote": "法令の番号を記憶から書かない"
+    },
+    {
+      "id": "lg-watch",
+      "repo": "legal-and-governance",
+      "path": ".github/workflows/statutes.yml",
+      "lang": "en",
+      "quote": "cron: '23 4 * * 3'"
+    },
+    {
+      "id": "lg-break",
+      "repo": "legal-and-governance",
+      "path": "verification/check.js",
+      "lang": "ja",
+      "quote": "壊し方の無い検査があっても落ちる"
+    },
+    {
+      "id": "lg-tool",
+      "repo": "legal-and-governance",
+      "path": "tools/statutes.js"
+    },
+    {
+      "id": "rc-consent",
+      "repo": "research-collaboration",
+      "path": "policies/privacy.en.md",
+      "lang": "en",
+      "quote": "Only for an issue whose consent box is ticked, the operator may give its title and text to Claude"
+    },
+    {
+      "id": "rc-human",
+      "repo": "research-collaboration",
+      "path": ".github/ISSUE_TEMPLATE/collaboration.yml",
+      "lang": "en",
+      "quote": "Research involving human participants, and research that uses other people's special care-required personal information, is not taken up."
+    },
+    {
+      "id": "dc-audit",
+      "repo": "deposit-check",
+      "path": "docs/legal-audit-2026-11-12.md"
+    },
+    {
+      "id": "ec-audit",
+      "repo": "errata-check",
+      "path": "docs/legal-audit-2026-11-12.md"
+    },
+    {
+      "id": "audit-sender",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "docs/legal-audit-2026-11-12.md",
+      "lang": "ja",
+      "quote": "運営者は自分の文書の発信者で、情報流通プラットフォーム対処法第3条第1項のただし書により責任の制限は掛からない。"
+    },
+    {
+      "id": "audit-dead",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "docs/legal-audit-2026-11-12.md",
+      "lang": "ja",
+      "quote": "死者の名誉の毀損は虚偽の事実の摘示に限る（刑法第230条第2項）。"
+    },
+    {
+      "id": "audit-17-before",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "docs/legal-audit-2026-11-12.md",
+      "lang": "ja",
+      "quote": "「点検の表」の「第三者への提供」の行は、運営者が個人データを第三者へ渡す仕組みは無いとして、問題なしとしていました。"
+    },
+    {
+      "id": "audit-17-past",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "docs/legal-audit-2026-11-12.md",
+      "lang": "ja",
+      "quote": "これまでの作業で、運営者のほかの人が開いた issue の題と本文が Claude に渡ったかは、確かめていません"
+    },
+    {
+      "id": "audit-17-date",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "docs/legal-audit-2026-11-12.md",
+      "lang": "ja",
+      "quote": "直した日は、日本時間で 2026-11-13 です。"
+    },
+    {
+      "id": "audit-pi-undecided",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "docs/legal-audit-2026-11-12.md",
+      "lang": "ja",
+      "quote": "当たるかが決まっていないので、記録だけにした"
+    },
+    {
+      "id": "sx-approach",
+      "repo": "sophaxis",
+      "path": "policies/takedown.md",
+      "lang": "en",
+      "quote": "This notice-and-response procedure follows the approach of Japanese law on the liability of providers of online services"
+    },
+    {
+      "id": "sx-548",
+      "repo": "sophaxis",
+      "path": "policies/terms.md",
+      "lang": "en",
+      "quote": "A change is made only as Article 548-4 of Japan's Civil Code allows"
+    },
+    {
+      "id": "lg-closes",
+      "repo": "legal-and-governance",
+      "path": "tools/statutes.js",
+      "lang": "en",
+      "quote": "state: 'closed', state_reason: 'completed'"
+    },
+    {
+      "id": "lg-names",
+      "repo": "legal-and-governance",
+      "path": "verification/check.js",
+      "lang": "ja",
+      "quote": "どのファイルにも、運営者のほかの創作の場の名が無く、そのリポジトリを指さない"
+    },
+    {
+      "id": "eco-13c-count",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "verification/check_ecosystem.js",
+      "lang": "en",
+      "quote": "repos.length === 12 && Object.keys(面).length > 100 && now.length === 0"
+    },
+    {
+      "id": "canon-invented",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "verification/statutes.json",
+      "lang": "ja",
+      "quote": "作り出した条を止める"
+    },
+    {
+      "id": "claude-71",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "CLAUDE.md",
+      "lang": "ja",
+      "quote": "最初に数えたときは 71 と書いていた。"
+    },
+    {
+      "id": "claude-conj",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "CLAUDE.md",
+      "lang": "ja",
+      "quote": "漢字は正しいので目視では通り抜ける。"
+    },
+    {
+      "id": "claude-api-merge",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "CLAUDE.md",
+      "lang": "ja",
+      "quote": "API のマージに表題だけを渡し、本文を渡していなかったためである。"
+    },
+    {
+      "id": "claude-fixed-count",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "CLAUDE.md",
+      "lang": "ja",
+      "quote": "一度そう書いて、次のマージで落ちた。"
+    },
+    {
+      "id": "canon-ipa-name",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "verification/statutes.json",
+      "lang": "ja",
+      "quote": "特定電気通信による情報の流通によって発生する権利侵害等への対処に関する法律"
+    },
+    {
+      "id": "audit-mit",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "docs/legal-audit-2026-11-12.md",
+      "lang": "ja",
+      "quote": "頁は trinity-operator を「全体が MIT」と読める形で書き"
+    },
+    {
+      "id": "dl-check",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "notes/design-legal.en.html",
+      "lang": "en",
+      "quote": "Section 10.69 of check_site.js counts its shapes and colours."
+    },
+    {
+      "id": "audit-by-claude",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "docs/legal-audit-2026-11-12.md",
+      "lang": "ja",
+      "quote": "この頁は、2026-11-12 に Claude が行った法令の点検の記録です。"
+    },
+    {
+      "id": "audit-error-def",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "docs/legal-audit-2026-11-12.md",
+      "lang": "ja",
+      "quote": "誤りは、条や引用が違うか、挙げた条の文から結論が出ないものです。"
+    },
+    {
+      "id": "audit-motion",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "docs/legal-audit-2026-11-12.md",
+      "lang": "ja",
+      "quote": "動きを減らす指定と図の aria-label は、10.69 に検査を足しました。"
+    },
+    {
+      "id": "cps-keyboard",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "verification/check_keyboard.js"
+    },
+    {
+      "id": "intake-noclose-test",
+      "repo": "cpsbvbng26-dotcom",
+      "path": ".github/checked-intake/verify.js",
+      "lang": "en",
+      "quote": "the code has no way to close or lock an issue"
+    },
+    {
+      "id": "claude-ancestors",
+      "repo": "cpsbvbng26-dotcom",
+      "path": "CLAUDE.md",
+      "lang": "ja",
+      "quote": "先祖の頁は故人だけを挙げており"
+    },
+    {
+      "id": "sx-fixed",
+      "repo": "sophaxis",
+      "path": "CLAUDE.md",
+      "lang": "ja",
+      "quote": "verification/check.js が文で固めている"
+    },
+    {
+      "id": "sx-check-places",
+      "repo": "sophaxis",
+      "path": "verification/check.js",
+      "lang": "en",
+      "quote": "the change in the feed of policy changes, 14 days ahead"
+    },
+    {
+      "id": "sx-free",
+      "repo": "sophaxis",
+      "path": "policies/terms.md",
+      "lang": "en",
+      "quote": "The site is served on Vercel's free Hobby plan, which Vercel allows only for personal or non-commercial use; Sophaxis is non-commercial."
+    },
+    {
+      "id": "pr-cps-297",
+      "repo": "cpsbvbng26-dotcom",
+      "pr": 297,
+      "what": "consent box for giving issues to Claude, and the disclaimer section on Article 28"
+    },
+    {
+      "id": "pr-cps-282",
+      "repo": "cpsbvbng26-dotcom",
+      "pr": 282,
+      "what": "the check that stops statements attributing views to living relatives"
+    },
+    {
+      "id": "pr-cps-321",
+      "repo": "cpsbvbng26-dotcom",
+      "pr": 321,
+      "what": "the workflow that answers issues with an empty body"
+    },
+    {
+      "id": "pr-cps-341",
+      "repo": "cpsbvbng26-dotcom",
+      "pr": 341,
+      "what": "the page on the legal handling of the design"
+    },
+    {
+      "id": "pr-sx-140",
+      "repo": "sophaxis",
+      "pr": 140,
+      "what": "the first places where Sophaxis is not offered"
+    },
+    {
+      "id": "pr-sx-218",
+      "repo": "sophaxis",
+      "pr": 218,
+      "what": "the check that a change is announced 14 days ahead"
+    },
+    {
+      "id": "pr-lg-1",
+      "repo": "legal-and-governance",
+      "pr": 1,
+      "what": "the legal entrance, its statute copies and its watcher"
+    },
+    {
+      "id": "pr-rc-4",
+      "repo": "research-collaboration",
+      "pr": 4,
+      "what": "changes after the read-only legal review"
+    },
+    {
+      "id": "c-cps-consent",
+      "repo": "cpsbvbng26-dotcom",
+      "commit": "2b575f19b41b54f4e1a8d1cf383cc3f7286842d8",
+      "what": "the required consent box in the error report form"
+    },
+    {
+      "id": "c-cps-kinship",
+      "repo": "cpsbvbng26-dotcom",
+      "commit": "e3abf85e4c7b98e941dbf4c8bbeb0c6654842618",
+      "what": "the pattern that stops attributing views to living relatives"
+    },
+    {
+      "id": "c-sx-notice",
+      "repo": "sophaxis",
+      "commit": "b09d95995798c13f6a9a22d83a1fd601a7645cc2",
+      "what": "check 114, including the 14-day announcement test"
+    }
+  ]
+}

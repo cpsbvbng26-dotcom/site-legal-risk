@@ -1,0 +1,178 @@
+{
+  "_": [
+    "The articles of Japanese statutes that the paper quotes. tools/statutes.js fetches each from the e-Gov law API (https://laws.e-gov.go.jp/api/1/articles;lawId=<id>;article=<n>) and writes the plain text to verification/statutes-texts.json; sha256 is the SHA-256 of that UTF-8 text.",
+    "The law numbers were copied from cpsbvbng26-dotcom's verification/statutes.json. None is written from memory.",
+    "verification/check.js checks that every quotation of a statute in the paper occurs, character for character, in the text recorded here, and verification/check_sources.js compares each text with the copy that cpsbvbng26-dotcom recorded."
+  ],
+  "fetched": "2026-11-23",
+  "statutes": [
+    {
+      "law": "著作権法",
+      "label": "第2条",
+      "law_id": "345AC0000000048",
+      "article": "2",
+      "law_id_from": "cpsbvbng26-dotcom の verification/statutes.json（コミット c3b4a45）の同じ条の e-Gov の番号",
+      "sha256": "d2e3ca05763140a26c547862bbaee2e0106018b69235cda8984c349548bd8d6b"
+    },
+    {
+      "law": "著作権法",
+      "label": "第10条",
+      "law_id": "345AC0000000048",
+      "article": "10",
+      "law_id_from": "cpsbvbng26-dotcom の verification/statutes.json（コミット c3b4a45）の同じ条の e-Gov の番号",
+      "sha256": "f0b9deab5f8adfa54d0fb32e26d1405e4818bea14c1d46045d3fbff9e4ead084"
+    },
+    {
+      "law": "著作権法",
+      "label": "第21条",
+      "law_id": "345AC0000000048",
+      "article": "21",
+      "law_id_from": "cpsbvbng26-dotcom の verification/statutes.json（コミット c3b4a45）の同じ条の e-Gov の番号",
+      "sha256": "a85d04f2fd20d7867d5579bee40676b13405c58ea7fd7eb27f1e7a5a03bda100"
+    },
+    {
+      "law": "意匠法",
+      "label": "第2条",
+      "law_id": "334AC0000000125",
+      "article": "2",
+      "law_id_from": "cpsbvbng26-dotcom の verification/statutes.json（コミット c3b4a45）の同じ条の e-Gov の番号",
+      "sha256": "1269a8ef67318251bacfa8d8e3e21c068c595c209bcf8b75a44b30c155dfcc0a"
+    },
+    {
+      "law": "意匠法",
+      "label": "第23条",
+      "law_id": "334AC0000000125",
+      "article": "23",
+      "law_id_from": "cpsbvbng26-dotcom の verification/statutes.json（コミット c3b4a45）の同じ条の e-Gov の番号",
+      "sha256": "9b5f05ea19a53e1d43811f6be3cf4d311e1e97e59667fdfad36e4ab19917bc3e"
+    },
+    {
+      "law": "商標法",
+      "label": "第25条",
+      "law_id": "334AC0000000127",
+      "article": "25",
+      "law_id_from": "cpsbvbng26-dotcom の verification/statutes.json（コミット c3b4a45）の同じ条の e-Gov の番号",
+      "sha256": "e1cd4c4290fdca9b93e0fd753c50e9fe5c6e353650609eb3f0d044c66797c405"
+    },
+    {
+      "law": "不正競争防止法",
+      "label": "第2条",
+      "law_id": "405AC0000000047",
+      "article": "2",
+      "law_id_from": "cpsbvbng26-dotcom の verification/statutes.json（コミット c3b4a45）の同じ条の e-Gov の番号",
+      "sha256": "827139a76b8a3c80540fe9d8260d9b811d990ba7dfe588d1354b90e7bc0f0279"
+    },
+    {
+      "law": "個人情報保護法",
+      "label": "第2条",
+      "law_id": "415AC0000000057",
+      "article": "2",
+      "law_id_from": "cpsbvbng26-dotcom の verification/statutes.json（コミット c3b4a45）の同じ条の e-Gov の番号",
+      "sha256": "dbb929584c0cc1037622a578c68615157e3e46dbc821526be1381d2de3a6e660"
+    },
+    {
+      "law": "個人情報保護法",
+      "label": "第16条",
+      "law_id": "415AC0000000057",
+      "article": "16",
+      "law_id_from": "cpsbvbng26-dotcom の verification/statutes.json（コミット c3b4a45）の同じ条の e-Gov の番号",
+      "sha256": "8d063767088475dc02c184570f20854841ac91e00fb935ed3320409ad99e5b17"
+    },
+    {
+      "law": "個人情報保護法",
+      "label": "第21条",
+      "law_id": "415AC0000000057",
+      "article": "21",
+      "law_id_from": "cpsbvbng26-dotcom の verification/statutes.json（コミット c3b4a45）の同じ条の e-Gov の番号",
+      "sha256": "31a2d9bedd9c8222212b10aed08b2fe870b81f01ac4366fc716a4369953e670d"
+    },
+    {
+      "law": "個人情報保護法",
+      "label": "第28条",
+      "law_id": "415AC0000000057",
+      "article": "28",
+      "law_id_from": "cpsbvbng26-dotcom の verification/statutes.json（コミット c3b4a45）の同じ条の e-Gov の番号",
+      "sha256": "2abf2c3f010636a58acd0d8575edff6e95a02ca86aa6e7b210cc99bd8f6d2589"
+    },
+    {
+      "law": "個人情報保護法",
+      "label": "第57条",
+      "law_id": "415AC0000000057",
+      "article": "57",
+      "law_id_from": "cpsbvbng26-dotcom の verification/statutes.json（コミット c3b4a45）の同じ条の e-Gov の番号",
+      "sha256": "c881da98ae023aef4e8622cf47e651bad21f3407a325306cef9f7a33217350c3"
+    },
+    {
+      "law": "情報流通プラットフォーム対処法",
+      "label": "第3条",
+      "law_id": "413AC0000000137",
+      "article": "3",
+      "law_id_from": "cpsbvbng26-dotcom の verification/statutes.json（コミット c3b4a45）の同じ条の e-Gov の番号",
+      "sha256": "9f05c7e2fe9ecab1efe8ede9c10d514666a5608c63b71baff767ccf15e8f3f32"
+    },
+    {
+      "law": "刑法",
+      "label": "第230条",
+      "law_id": "140AC0000000045",
+      "article": "230",
+      "law_id_from": "cpsbvbng26-dotcom の verification/statutes.json（コミット c3b4a45）の同じ条の e-Gov の番号",
+      "sha256": "ac736dabc949267bfc96e7bdb12ad19dc0409e60840f3515e06ac0b4f56c95a6"
+    },
+    {
+      "law": "刑法",
+      "label": "第230条の2",
+      "law_id": "140AC0000000045",
+      "article": "230_2",
+      "law_id_from": "cpsbvbng26-dotcom の verification/statutes.json（コミット c3b4a45）の同じ条の e-Gov の番号",
+      "sha256": "ec7c6a50e4a8313ca34c14f720d0806560b4b8aef4198d22aef83e6dd60494c4"
+    },
+    {
+      "law": "民法",
+      "label": "第709条",
+      "law_id": "129AC0000000089",
+      "article": "709",
+      "law_id_from": "cpsbvbng26-dotcom の verification/statutes.json（コミット c3b4a45）の同じ条の e-Gov の番号",
+      "sha256": "560e4d946b0d1f1f66d15f99a27226a80ea53f9e692a07b17248e319b566aacc"
+    },
+    {
+      "law": "民法",
+      "label": "第548条の2",
+      "law_id": "129AC0000000089",
+      "article": "548_2",
+      "law_id_from": "cpsbvbng26-dotcom の verification/statutes.json（コミット c3b4a45）の同じ条の e-Gov の番号",
+      "sha256": "a8d84ebb66e26efe68e987db813a466f35c1996a2c852ccc7788d067f33d3d2e"
+    },
+    {
+      "law": "民法",
+      "label": "第548条の4",
+      "law_id": "129AC0000000089",
+      "article": "548_4",
+      "law_id_from": "cpsbvbng26-dotcom の verification/statutes.json（コミット c3b4a45）の同じ条の e-Gov の番号",
+      "sha256": "eaa6f8148934472095601c59fdf8ea7304519a550991208c805b9ef148f7cd0e"
+    },
+    {
+      "law": "消費者契約法",
+      "label": "第8条",
+      "law_id": "412AC0000000061",
+      "article": "8",
+      "law_id_from": "cpsbvbng26-dotcom の verification/statutes.json（コミット c3b4a45）の同じ条の e-Gov の番号",
+      "sha256": "e448b8aeb7b5a1e82040051acc71a04a083dfd3ff1b40fa48183e7b250cf1820"
+    },
+    {
+      "law": "障害者差別解消法",
+      "label": "第2条",
+      "law_id": "425AC0000000065",
+      "article": "2",
+      "law_id_from": "cpsbvbng26-dotcom の verification/statutes.json（コミット c3b4a45）の同じ条の e-Gov の番号",
+      "sha256": "3c5f4837cb368517ec9d236bc43ea08bfdb8b190f228e0f27800623c6a23522f"
+    },
+    {
+      "law": "障害者差別解消法",
+      "label": "第8条",
+      "law_id": "425AC0000000065",
+      "article": "8",
+      "law_id_from": "cpsbvbng26-dotcom の verification/statutes.json（コミット c3b4a45）の同じ条の e-Gov の番号",
+      "sha256": "0a058f1f4e2e5968d50afd70576a381409a1e62d19e629036114dea9139934f2"
+    }
+  ]
+}

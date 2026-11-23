@@ -1,0 +1,56 @@
+name: verify
+# Runs the checks of this repository on every push and pull request.
+# local: the checks that need only this repository and poppler-utils (the PDF's pages, words and text).
+# sources: the checks that read the sibling repositories at the commits pinned in verification/evidence.json. They are
+# public and are checked out with their whole history, read only.
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  local:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { persist-credentials: false }
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+      - run: sudo apt-get install -y -qq --no-install-recommends poppler-utils
+      - run: node verification/check.js
+      - run: node verification/check.js --break
+
+  sources:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { path: repos/site-legal-risk, persist-credentials: false }
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { repository: cpsbvbng26-dotcom/cpsbvbng26-dotcom, path: repos/cpsbvbng26-dotcom, fetch-depth: 0, persist-credentials: false }
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { repository: cpsbvbng26-dotcom/researcher-profile, path: repos/researcher-profile, fetch-depth: 0, persist-credentials: false }
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { repository: cpsbvbng26-dotcom/sophaxis, path: repos/sophaxis, fetch-depth: 0, persist-credentials: false }
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { repository: cpsbvbng26-dotcom/legal-and-governance, path: repos/legal-and-governance, fetch-depth: 0, persist-credentials: false }
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { repository: cpsbvbng26-dotcom/research-collaboration, path: repos/research-collaboration, fetch-depth: 0, persist-credentials: false }
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { repository: cpsbvbng26-dotcom/deposit-check, path: repos/deposit-check, fetch-depth: 0, persist-credentials: false }
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { repository: cpsbvbng26-dotcom/errata-check, path: repos/errata-check, fetch-depth: 0, persist-credentials: false }
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+      - run: node verification/check_sources.js
+        working-directory: repos/site-legal-risk
+        env: { SIBLINGS: .. }
+      - run: node verification/check_sources.js --break
+        working-directory: repos/site-legal-risk
+        env: { SIBLINGS: .. }
